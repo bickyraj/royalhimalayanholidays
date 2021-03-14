@@ -1,0 +1,4 @@
+[25-Dec-2020 06:48:08 UTC] PHP Warning:  require(partials/header.php): failed to open stream: No such file or directory in /home/manoj/public_html/holidaytoursnepal/index.php on line 22
+[25-Dec-2020 06:48:08 UTC] PHP Fatal error:  require(): Failed opening required 'partials/header.php' (include_path='.:/opt/cpanel/ea-php72/root/usr/share/pear') in /home/manoj/public_html/holidaytoursnepal/index.php on line 22
+[25-Dec-2020 06:48:49 UTC] PHP Warning:  require(partials/header.php): failed to open stream: No such file or directory in /home/manoj/public_html/holidaytoursnepal/index.php on line 22
+[25-Dec-2020 06:48:49 UTC] PHP Fatal error:  require(): Failed opening required 'partials/header.php' (include_path='.:/opt/cpanel/ea-php72/root/usr/share/pear') in /home/manoj/public_html/holidaytoursnepal/index.php on line 22
