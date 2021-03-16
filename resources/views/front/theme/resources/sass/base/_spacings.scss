@@ -1,0 +1,103 @@
+@each $spacing in map-keys($spacings) {
+    .m-#{$spacing} {
+        margin: map-get($spacings, $spacing);
+    }
+    .mt-#{$spacing} {
+        margin-top: map-get($spacings, $spacing);
+    }
+    .mb-#{$spacing} {
+        margin-bottom: map-get($spacings, $spacing);
+    }
+    .ml-#{$spacing} {
+        margin-left: map-get($spacings, $spacing);
+    }
+    .mr-#{$spacing} {
+        margin-right: map-get($spacings, $spacing);
+    }
+    .mx-#{$spacing} {
+        margin-left: map-get($spacings, $spacing);
+        margin-right: map-get($spacings, $spacing);
+    }
+    .my-#{$spacing} {
+        margin-top: map-get($spacings, $spacing);
+        margin-bottom: map-get($spacings, $spacing);
+    }
+    .p-#{$spacing} {
+        padding: map-get($spacings, $spacing);
+    }
+    .pt-#{$spacing} {
+        padding-top: map-get($spacings, $spacing);
+    }
+    .pb-#{$spacing} {
+        padding-bottom: map-get($spacings, $spacing);
+    }
+    .pl-#{$spacing} {
+        padding-left: map-get($spacings, $spacing);
+    }
+    .pr-#{$spacing} {
+        padding-right: map-get($spacings, $spacing);
+    }
+    .px-#{$spacing} {
+        padding-left: map-get($spacings, $spacing);
+        padding-right: map-get($spacings, $spacing);
+    }
+    .py-#{$spacing} {
+        padding-top: map-get($spacings, $spacing);
+        padding-bottom: map-get($spacings, $spacing);
+    }
+}
+
+@if $enable-responsive-spacings {
+    @each $breakpoint in map-keys($breakpoints-up) {
+        @include breakpoint-up($breakpoint) {
+            @each $spacing in map-keys($spacings) {
+                .#{$breakpoint}\:m-#{$spacing} {
+                    margin: map-get($spacings, $spacing);
+                }
+                .#{$breakpoint}\:mt-#{$spacing} {
+                    margin-top: map-get($spacings, $spacing);
+                }
+                .#{$breakpoint}\:mb-#{$spacing} {
+                    margin-bottom: map-get($spacings, $spacing);
+                }
+                .#{$breakpoint}\:ml-#{$spacing} {
+                    margin-left: map-get($spacings, $spacing);
+                }
+                .#{$breakpoint}\:mr-#{$spacing} {
+                    margin-right: map-get($spacings, $spacing);
+                }
+                .#{$breakpoint}\:mx-#{$spacing} {
+                    margin-left: map-get($spacings, $spacing);
+                    margin-right: map-get($spacings, $spacing);
+                }
+                .#{$breakpoint}\:my-#{$spacing} {
+                    margin-top: map-get($spacings, $spacing);
+                    margin-bottom: map-get($spacings, $spacing);
+                }
+                .#{$breakpoint}\:p-#{$spacing} {
+                    padding: map-get($spacings, $spacing);
+                }
+                .#{$breakpoint}\:pt-#{$spacing} {
+                    padding-top: map-get($spacings, $spacing);
+                }
+                .#{$breakpoint}\:pb-#{$spacing} {
+                    padding-bottom: map-get($spacings, $spacing);
+                }
+                .#{$breakpoint}\:pl-#{$spacing} {
+                    padding-left: map-get($spacings, $spacing);
+                }
+                .#{$breakpoint}\:pr-#{$spacing} {
+                    padding-right: map-get($spacings, $spacing);
+                }
+                .#{$breakpoint}\:px-#{$spacing} {
+                    padding-left: map-get($spacings, $spacing);
+                    padding-right: map-get($spacings, $spacing);
+                }
+                .#{$breakpoint}\:py-#{$spacing} {
+                    padding-top: map-get($spacings, $spacing);
+                    padding-bottom: map-get($spacings, $spacing);
+                }
+            }
+        }
+    }
+}

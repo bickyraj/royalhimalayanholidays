@@ -29,6 +29,7 @@ class HomeController extends Controller
             ['from_date', '>=', Carbon::today()]
         ])->orderBy('from_date', 'asc')->get();
 
+		$data['tours'] = \App\Trip::latest()->get();
 		return view('front.index', $data);
 	}
 

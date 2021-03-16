@@ -1,14 +1,12 @@
 <a href="{{ route('front.activities.show', $activity->slug) }}">
-    <div class="activity">
-        <img src="{{ $activity->imageUrl }}" alt="">
-        <div class="activity-title">
-            <h2>{{ $activity->name }}</h2>
-            <svg>
-                <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#arrownarrowright" /></svg>
+    <div class="activity relative">
+        <img src="{{ $activity->imageUrl }}" alt="" class="block w-full">
+        <div class="text absolute">
+            <h2 class="font-display uppercase text-white px-2 py-4">{{ $activity->name }}</h2>
         </div>
-        <div class="tours">
-            <div class="fs-xl bold">{{ $activity->trips->count() }}</div>
+        <!-- <div class="tours">
+            <div class="fs-xl bold">10</div>
             <div class="fs-sm">tours</div>
-        </div>
+        </div> -->
     </div>
 </a>

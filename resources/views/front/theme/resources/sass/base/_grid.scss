@@ -1,0 +1,36 @@
+@for $i from 1 through 12 {
+    .grid-cols-#{$i} {
+        grid-template-columns: repeat(#{$i}, minmax(0, 1fr));
+    }
+    .col-span-#{$i} {
+        grid-column: span #{$i} / span #{$i};
+    }
+}
+
+@each $breakpoint in map-keys($breakpoints-up) {
+    @include breakpoint-up($breakpoint) {
+        @for $i from 1 through 12 {
+            .#{$breakpoint}\:grid-cols-#{$i} {
+                grid-template-columns: repeat(#{$i}, minmax(0, 1fr));
+            }
+            .#{$breakpoint}\:col-span-#{$i} {
+                grid-column: span #{$i} / span #{$i};
+            }
+        }
+    }
+}
+
+@each $spacing in map-keys($spacings) {
+    .gap-#{$spacing} {
+        gap: map-get($spacings, $spacing);
+    }
+}
+@each $breakpoint in map-keys($breakpoints-up) {
+    @include breakpoint-up($breakpoint) {
+        @each $spacing in map-keys($spacings) {
+            .#{$breakpoint}\:gap-#{$spacing} {
+                gap: map-get($spacings, $spacing);
+            }
+        }
+    }
+}

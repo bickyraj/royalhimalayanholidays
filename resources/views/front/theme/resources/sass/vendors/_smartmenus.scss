@@ -1,0 +1,45 @@
+@import '../../node_modules/smartmenus/src/css/sm-core-css.css';
+
+$sm-simple__border-width: 0;
+$sm-simple__box-shadow: none;
+$sm-simple__font-family: inherit;
+$sm-simple__desktop-vp: 1199px;
+$sm-simple__desktop-bg: inherit;
+$sm-simple__desktop-item-color: $primary;
+$sm-simple__desktop-item-hover-bg: lighten($primary, 25);
+$sm-simple__desktop-separators-size: 0;
+
+@import '~smartmenus/src/css/sm-simple/sm-simple';
+
+.sm-simple {
+  background: #ffffffee;
+}
+
+@media (min-width: $sm-simple__desktop-vp) {
+  .sm-simple {
+    background: transparent;
+    & > li {
+      & > a {
+        &,
+        &:hover,
+        &:focus,
+        &:active,
+        &.highlighted {
+          color: white;
+          font-weight: 700;
+          font-size: 1.1rem;
+          background: transparent;
+        }
+      }
+    }
+  }
+  .sm-simple ul {
+    background: white;
+    box-shadow: $shadow;
+    border-top: 3px solid $accent;
+    a .sub-arrow {
+      left: auto;
+      right: 8px;
+    }
+  }
+}

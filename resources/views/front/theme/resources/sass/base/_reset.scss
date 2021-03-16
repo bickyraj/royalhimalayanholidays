@@ -1,0 +1,55 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-size: 1rem;
+    font-weight: normal;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+
+    // &:focus {
+    //   outline: none;
+    //   box-shadow: 0 0 0.5rem transparentize($accent, 0.5),
+    //     inset 0 0 0.2rem transparentize($accent, 0.5),
+    //     0 0 1rem transparentize($accent, 0.5);
+    // }
+}
+
+button {
+    background: none;
+    border: 0;
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+    cursor: pointer;
+
+    &:focus {
+        outline: 1px dashed $primary;
+    }
+}
+
+input,
+select,
+textarea {
+    border: 0;
+    font-family: $font-base;
+}
+
+ul {
+    list-style: none;
+}
+
+table {
+    border-collapse: collapse;
+}

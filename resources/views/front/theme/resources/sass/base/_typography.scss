@@ -1,0 +1,104 @@
+html {
+    font-size: 16px;
+}
+
+body {
+    font-family: $font-base;
+}
+
+.font-display {
+    font-family: $font-display;
+}
+
+.lim {
+    p {
+        max-width: 800px;
+    }
+}
+p {
+    margin-bottom: 2rem;
+    line-height: 1.8;
+}
+
+a.theme {
+    display: inline-flex;
+    align-items: center;
+    font-weight: 700;
+    color: $accent;
+    svg {
+        width: 1.3rem;
+        height: 1.3rem;
+        margin-left: 1rem;
+        @include tran;
+    }
+    &:hover {
+        svg {
+            animation: 1s ease infinite alternate shake;
+        }
+    }
+}
+
+@each $font-size in map-keys($font-sizes) {
+    .text-#{$font-size} {
+        font-size: map-get($font-sizes, $font-size);
+    }
+}
+
+@if $enable-responsive-font-sizes {
+    @each $breakpoint in map-keys($breakpoints-up) {
+        @include breakpoint-up($breakpoint) {
+            @each $font-size in map-keys($font-sizes) {
+                .#{$breakpoint}\:text-#{$font-size} {
+                    font-size: map-get($font-sizes, $font-size);
+                }
+            }
+        }
+    }
+}
+
+// Colors
+.text-primary {
+    color: $primary;
+}
+.hover\:text-primary:hover {
+    color: $primary;
+}
+.text-gray {
+    color: #999;
+}
+.text-accent {
+    color: $accent;
+}
+.text-light {
+    color: $light;
+}
+.text-white {
+    color: white;
+}
+.text-green {
+    color: forestgreen;
+}
+.text-red {
+    color: firebrick;
+}
+.hover\:text-accent {
+    &:hover {
+        color: $accent;
+    }
+}
+
+.text-left {
+    text-align: left;
+}
+.text-right {
+    text-align: right;
+}
+.text-center {
+    text-align: center;
+}
+.uppercase {
+    text-transform: uppercase;
+}
+.font-bold {
+    font-weight: 700;
+}

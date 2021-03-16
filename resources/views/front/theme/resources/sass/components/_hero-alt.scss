@@ -1,0 +1,42 @@
+.hero {
+    .overlay {
+        background: linear-gradient(transparent, transparentize(black, 0.5));
+        bottom: 0;
+    }
+    img {
+        width: 100vw;
+        height: 30rem;
+        object-fit: cover;
+        @include breakpoint-up(lg) {
+            height: 100vh;
+        }
+    }
+}
+.hero-alt {
+    img {
+        display: block;
+        width: 100%;
+        height: 30rem;
+        object-fit: cover;
+    }
+    .overlay {
+        background: linear-gradient(
+            to bottom,
+            transparent,
+            transparentize(black, 0.5)
+        );
+        bottom: 0;
+        width: 100%;
+    }
+    .hero-text {
+        bottom: 0;
+        padding-bottom: 3rem;
+    }
+    h1 {
+        max-width: 1200px;
+        font-size: calc(4vw + 1rem);
+        line-height: 1.2;
+        font-weight: 700;
+        color: white;
+    }
+}

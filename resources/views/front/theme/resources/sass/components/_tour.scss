@@ -1,0 +1,112 @@
+.tour {
+    position: relative;
+    background: #fafaff;
+    border-radius: 0.8rem;
+    // border-bottom: 2px solid #eef;
+    .top {
+        overflow: hidden;
+        position: relative;
+        border-radius: 0.5rem 0.5rem 0 0;
+        img {
+            display: block;
+            transform: scale(1.1);
+            @include tran;
+        }
+        &__overlay {
+            display: flex;
+            justify-content: space-between;
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background: linear-gradient(
+                to bottom,
+                transparent,
+                transparentize($primary, 0.6)
+            );
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            color: white;
+        }
+    }
+    .offer {
+        position: absolute;
+        right: -0.5rem;
+        top: 1rem;
+        background: $accent;
+        padding: 0.35rem 1rem;
+        height: 2rem;
+        color: white;
+        font-size: 1rem;
+        font-weight: 700;
+        &::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 100%;
+            border-top: 1rem solid $accent;
+            border-right: 0.5rem solid $accent;
+            border-bottom: 1rem solid $accent;
+            border-left: 1rem solid transparent;
+        }
+        &::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            right: 0;
+            border-top: 0.25rem solid darken($accent, 10);
+            border-right: 0.25rem solid transparent;
+            border-bottom: 0.25rem solid transparent;
+            border-left: 0.25rem solid darken($accent, 10);
+        }
+    }
+    .bottom {
+        border-radius: 0 0 0.8rem 0.8rem;
+    }
+    &:hover {
+        .top img {
+            transform: scale(1);
+        }
+    }
+    .icon {
+        color: $primary;
+    }
+
+    .summary {
+        display: none;
+    }
+
+    @include breakpoint-up(md) {
+        &.large {
+            grid-column: span 2 / span 2;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+
+            .top {
+                img {
+                    height: 100%;
+                    // max-height: 348px;
+                    object-fit: cover;
+                    border-radius: 0.5rem;
+                }
+            }
+
+            .details {
+                display: block;
+            }
+
+            .summary {
+                margin: 0.5rem 0;
+            }
+
+            .stars {
+                border: 0;
+                justify-content: flex-start;
+            }
+        }
+        // .price {
+        //   display: flex;
+        // }
+    }
+}

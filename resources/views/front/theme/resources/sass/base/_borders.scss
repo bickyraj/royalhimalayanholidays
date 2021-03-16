@@ -1,0 +1,15 @@
+.border-none {
+    border: none;
+}
+.border-light {
+    border: 1px solid $light;
+}
+.border-top-light {
+    border-top: 1px solid $light;
+}
+.border-right-light {
+    border-right: 1px solid $light;
+}
+.border-primary {
+    border: 1px solid $primary;
+}

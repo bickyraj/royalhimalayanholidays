@@ -1,0 +1,60 @@
+.hero-slider {
+    .text {
+        @include breakpoint-down(lg) {
+            bottom: 2rem;
+        }
+        @include breakpoint-up(lg) {
+            top: 50%;
+        }
+        max-width: 800px;
+        background: transparentize(white, 0.4);
+        backdrop-filter: blur(2px);
+        .buttons {
+            bottom: 0;
+            transform: translate(2rem, 50%);
+        }
+    }
+}
+.hero-slider-controls {
+    bottom: 50%;
+    z-index: 98;
+    button {
+        background: transparentize(white, 0.2);
+        color: $primary;
+        padding: 0.5rem;
+        &:hover {
+            background: transparentize(white, 0.1);
+        }
+    }
+}
+
+.destination {
+    img {
+        min-height: 15rem;
+        object-fit: cover;
+        border-radius: 0.5rem;
+    }
+    .text {
+        bottom: 0;
+        left: 0;
+        border-top-right-radius: 1rem;
+    }
+}
+
+.activity {
+    img {
+        height: 15rem;
+        object-fit: cover;
+    }
+    .text {
+        bottom: 0;
+        left: 0;
+        border-top-right-radius: 1rem;
+        width: 100%;
+        background: linear-gradient(
+            to top,
+            transparentize(black, 0.5),
+            transparentize(black, 1)
+        );
+    }
+}

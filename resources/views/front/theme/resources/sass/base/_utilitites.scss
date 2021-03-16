@@ -1,0 +1,110 @@
+// Positions
+.absolute {
+    position: absolute;
+}
+
+@each $breakpoint in map-keys($breakpoints-up) {
+    @include breakpoint-up($breakpoint) {
+        .#{$breakpoint}\:absolute {
+            position: absolute;
+        }
+    }
+}
+
+.fixed {
+    position: fixed;
+}
+.relative {
+    position: relative;
+}
+.sticky-top {
+    position: sticky;
+    top: 0;
+}
+
+// Display
+.none {
+    display: none;
+}
+.block {
+    display: block;
+}
+.flex {
+    display: flex;
+}
+.grid {
+    display: grid;
+}
+
+@each $breakpoint in map-keys($breakpoints-up) {
+    @include breakpoint-up($breakpoint) {
+        .#{$breakpoint}\:none {
+            display: none !important;
+        }
+        .#{$breakpoint}\:block {
+            display: block;
+        }
+        .#{$breakpoint}\:flex {
+            display: flex;
+        }
+        .#{$breakpoint}\:grid {
+            display: grid;
+        }
+    }
+}
+
+// Flex
+.justify-start {
+    justify-content: flex-start;
+}
+.justify-end {
+    justify-content: flex-end;
+}
+.justify-center {
+    justify-content: center;
+}
+.justify-between {
+    justify-content: space-between;
+}
+.items-start {
+    align-items: flex-start;
+}
+.items-end {
+    align-items: flex-end;
+}
+.items-center {
+    align-items: center;
+}
+.items-baseline {
+    align-items: baseline;
+}
+.self-end {
+    align-self: end;
+}
+.flex-col {
+    flex-direction: column;
+}
+.flex-grow-0 {
+    flex-grow: 0;
+}
+.flex-grow-1 {
+    flex-grow: 1;
+}
+.flex-shrink-0 {
+    flex-shrink: 0;
+}
+.flex-wrap {
+    flex-wrap: wrap;
+}
+
+.object-cover {
+    object-fit: cover;
+}
+
+// Shadows
+.shadow-sm {
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+.shadow-md {
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}

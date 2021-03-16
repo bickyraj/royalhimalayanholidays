@@ -1,55 +1,55 @@
-<div>
-    <div class="grid lg:grid-cols-2 gap-3">
+<div class="relative">
+    <div class="grid lg:grid-cols-2 gap-4">
         <div>
-            <img src="{{ $block2tour->imageUrl }}" alt="{{ $block2tour->name }}">
+            <img src="{{ $tour->imageUrl }}" alt="{{ $tour->name }}">
         </div>
         <div>
-            <h2 class="fs-2xl bold">
-                {{ $block2tour->name }}
+            <h2 class="mb-2 text-3xl font-display uppercase">
+                {{ $tour->name }}
             </h2>
-            {{ truncate(strip_tags($block2tour->trip_info['overview'])) }}
+            {{ truncate(strip_tags($tour->trip_info['overview'])) }}
 
-            <div class="flex wrap text-primary mb-2">
-                <div class="flex aic m-1 p-2 bg-light">
-                    <svg class="icon-md mr-1">
+            <div class="flex wrap mb-4">
+                <div class="flex aic mr-2 p-2">
+                    <svg class="w-6 h-6 mr-1">
                         <use xlink:href="{{ asset('assets/front/img/sprite.svg#calendar') }}"></use>
                     </svg>
                     <div>
                         <div class="upper bold fs-xs">Duration</div>
-                        <span class="fs-lg bold"> <?= $block2tour->duration; ?> </span> days
+                        <span class="fs-lg bold"> <?= $tour->duration; ?> </span> days
                     </div>
                 </div>
-                <div class="flex aic m-1 p-2 bg-light">
-                    <svg class="icon-md mr-1">
+                <div class="flex aic p-2">
+                    <svg class="w-6 h-6 mr-1">
                         <use xlink:href="{{ asset('assets/front/img/sprite.svg#emojihappy') }}"></use>
                     </svg>
                     <div>
                         <div class="upper bold fs-xs">Difficulty</div>
-                        {{ $block2tour->difficulty_grade_value }}
+                        {{ $tour->difficulty_grade_value }}
                     </div>
                 </div>
             </div>
 
             <div class="price mb-4">
-                <div>
-                    <span class="fs-sm">
+                <div class="text-accent">
+                    <span class="text-sm">
                         from
                     </span>
-                    <s class="old">
-                        USD {{ number_format($block2tour->cost, 2) }}
+                    <s class="font-bold">
+                        USD {{ number_format($tour->cost, 2) }}
                     </s>
                 </div>
-                <div>
-                    <span class=" text-accent fs-sm">
+                <div class="font-display">
+                    <span class="">
                         USD
                     </span>
                     @php
-                        $price_arr = explode('.', number_format($block2tour->offer_price, 2));
+                        $price_arr = explode('.', number_format($tour->offer_price, 2));
                     @endphp
-                    <span class=" text-accent fs-2xl bold">
+                    <span class="text-4xl">
                         {{ $price_arr[0] }}
                     </span>
-                    <span class=" text-accent fs-md">
+                    <span class="">
                         .{{ $price_arr[1] }}
                     </span>
                 </div>
@@ -57,15 +57,15 @@
 
 
             <div>
-                <a href="{{ route('front.trips.show', $block2tour->slug) }}" class="btn btn-theme">
+                <a href="tour-details.php" class="btn btn-accent">
                     Explore
-                    <svg class="icon">
+                    <svg class="w-6 h-6">
                         <use xlink:href="{{ asset('assets/front/img/sprite.svg#arrownarrowright') }}"></use>
                     </svg>
                 </a>
-                <a href="{{ route('front.trips.booking', $block2tour->slug) }}" class="btn btn-gray">
+                {{-- <a href="tour-details.php" class="btn btn-gray">
                     Book Now
-                </a>
+                </a> --}}
             </div>
         </div>
     </div>

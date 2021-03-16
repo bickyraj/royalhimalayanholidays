@@ -1,0 +1,37 @@
+.gallery {
+    .overlay {
+        opacity: 0;
+        background: transparentize(black, 0.8);
+        top: 0;
+        left: 0;
+        @include tran;
+        &::after {
+            content: "";
+            transform: translate();
+            width: 2rem;
+            height: 2rem;
+            border-radius: 3rem;
+            background: $primary;
+            @include tran;
+        }
+    }
+    svg {
+        opacity: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    .item:hover {
+        .overlay {
+            opacity: 1;
+            &::after {
+                width: 4rem;
+                height: 4rem;
+            }
+        }
+        svg {
+            opacity: 1;
+        }
+    }
+}

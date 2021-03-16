@@ -1,0 +1,14 @@
+@each $spacing in map-keys($spacings) {
+    .w-#{$spacing} {
+        width: map-get($spacings, $spacing);
+    }
+    .h-#{$spacing} {
+        height: map-get($spacings, $spacing);
+    }
+}
+.w-full {
+    width: 100%;
+}
+.h-full {
+    height: 100%;
+}

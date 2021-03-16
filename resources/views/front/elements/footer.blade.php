@@ -1,34 +1,16 @@
-<!-- Why Choose Us -->
-<div class="bg-light py-4">
-    <div class="container">
-        <h1 class="mb-3 font-display fs-2xl text-primary upper center">Why Choose Us</h1>
-        <ul style="columns: 18rem 3">
-            @forelse ($footer_why_choose_us as $item)
-                <li class="flex mb-1" style="break-inside:avoid-column">
-                    <svg class="icon-md shrink-0 mr-1 text-accent">
-                        <use xlink:href="{{ asset('assets/front/img/sprite.svg#check') }}" />
-                    </svg>
-                    {{ $item->title }}
-                </li>
-            @empty
-            @endforelse
-        </ul>
-    </div>
-</div>
-
 <!-- Newsletter -->
-<div class="newsletter">
+<div class="bg-light py-8">
     <div class="container">
-        <div class="grid">
-            <div class="col-1">
-                <h1>Join our Newsletter</h1>
-                <p>Sign up to stay updated with latest offers, news and more.</p>
+        <div class="grid lg:grid-cols-2 gap-4">
+            <div>
+                <h1 class="mb-2 font-display uppercase text-2xl text-primary">Join our Newsletter</h1>
+                <div>Sign up to stay updated with latest offers, news and more.</div>
             </div>
             <div>
-                <form id="email-subscribe-form">
+                <form class="flex flex-wrap" id="email-subscribe-form">
                     <label for="emailsub" class="sr-only">Email</label>
-                    <input type="email" name="email" id="emailsub" placeholder="Your email" required>
-                    <button type="submit">Subscribe</button>
+                    <input type="email" id="emailsub" name="email" class="text-xl p-4 mb-1 lg:mb-0 lg:mr-2" placeholder="Your email" required>
+                    <button type="submit" class="btn btn-accent">Subscribe</button>
                 </form>
             </div>
         </div>
@@ -36,80 +18,87 @@
 </div><!-- Newsletter -->
 
 <!-- Footer -->
-<footer>
+<footer class="bg-primary text-white">
     <div class="container fs-sm">
-        <div class="grid">
-            <div class="col">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+            <div class="mb-4">
                 <h1>Destinations</h1>
                 <ul>
                     @if($footer1)
                     @foreach($footer1 as $menu)
                       <li class="">
-                        <a href="{!! ($menu->link)?$menu->link:'javascript:;' !!}">{{ $menu->name }}</a>
+                        <a href="{!! ($menu->link)?$menu->link:'javascript:;' !!}" class="text-sm">{{ $menu->name }}</a>
                       </li>
                     @endforeach
                     @endif
                 </ul>
             </div>
-            <div class="col">
+            <div class="mb-4">
                 <h1>Activities</h1>
                 <ul>
                     @if($footer2)
                     @foreach($footer2 as $menu)
                       <li class="">
-                        <a href="{!! ($menu->link)?$menu->link:'javascript:;' !!}">{{ $menu->name }}</a>
+                        <a href="{!! ($menu->link)?$menu->link:'javascript:;' !!}" class="text-sm">{{ $menu->name }}</a>
                       </li>
                     @endforeach
                     @endif
                 </ul>
             </div>
-            <div class="col">
+            <div class="mb-4">
                 <h1>About</h1>
                 <ul>
                     @if($footer3)
                     @foreach($footer3 as $menu)
                       <li class="">
-                        <a href="{!! ($menu->link)?$menu->link:'javascript:;' !!}">{{ $menu->name }}</a>
+                        <a href="{!! ($menu->link)?$menu->link:'javascript:;' !!}" class="text-sm">{{ $menu->name }}</a>
                       </li>
                     @endforeach
                     @endif
                 </ul>
             </div>
-            <div class="col">
-                <h1>{{ Setting::get('site_name') ?? '' }}</h1>
+            <div class="col-span-2 lg:col-span-1">
+                <h1 class="font-display text-2xl text-white">{{ Setting::get('site_name') ?? '' }}</h1>
                 <ul class="icon-list">
-                    <li><svg class="text-primary">
+                    <li class="flex">
+                        <svg class="flex-shrink-0 mr-1">
                             <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#locationmarker" /></svg>
-                       {{ Setting::get('address') ?? '' }}</li>
-                    <li><svg class="text-primary">
-                            <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#phone" /></svg><a href="tel:+977-9851191053">+977 {{ Setting::get('mobile1') ?? '' }}</a></li>
-                    <li><svg class="text-primary">
-                            <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#phone" /></svg> <a href="tel:+977-9804196924">+977 {{ Setting::get('mobile2') ?? '' }}</a></li>
-                    <li><svg class="text-primary">
-                            <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#mail" /></svg> <a href="mailto:{{ Setting::get('email') ?? '' }}">{{ Setting::get('email') ?? '' }}</a></li>
+                        <span class="text-sm">{{ Setting::get('address') ?? '' }}</span></li>
+                    <li class="flex">
+                        <svg class="flex-shrink-0 mr-1">
+                            <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#phone" /></svg>
+                        <a class="text-sm" href="tel:{{ Setting::get('mobile1') ?? '' }}">{{ Setting::get('mobile1') ?? '' }}</a></li>
+                    <li class="flex">
+                        <svg class="flex-shrink-0 mr-1">
+                            <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#devicemobile" /></svg>
+                        <a class="text-sm" href="tel:{{ Setting::get('mobile2') ?? '' }}">{{ Setting::get('mobile2') ?? '' }}</a></li>
+                    <li class="flex">
+                        <svg class="flex-shrink-0 mr-1">
+                            <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#mail" /></svg>
+                        <a class="text-sm" href="mailto:{{ Setting::get('email') ?? '' }}">{{ Setting::get('email') ?? '' }}</a></li>
                 </ul>
             </div>
         </div>
     </div>
     <div class="bottom">
         <div class="container">
-            <ul class="social-links wrap">
+            <ul class="social-links flex-wrap mb-4">
                 <li class="mb-1">
-                    <a href="{{ Setting::get('facebook') }}" target="_blank">
+                    <a href="{{ Setting::get('facebook') }}">
                         <svg>
                             <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#facebook" />
                         </svg>
                     </a>
                 </li>
                 <li class="mb-1">
-                    <a href="{{ Setting::get('twitter') }}" target="_blank">
+                    <a href="{{ Setting::get('twitter') }}">
                         <svg>
                             <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#twitter" />
                         </svg>
                     </a>
                 </li>
                 <li class="mb-1">
-                    <a href="{{ Setting::get('instagram') }}" target="_blank">
+                    <a href="{{ Setting::get('instagram') }}">
                         <svg>
                             <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#instagram" />
                         </svg>
@@ -129,36 +118,36 @@
                         </svg>
                     </a>
                 </li>
-                {{-- <li class="mb-1">
-                    <a href="#">
+                <li class="mb-1">
+                    <a href="{{ Setting::get('weixin') }}">
                         <svg>
                             <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#weixin" />
                         </svg>
                     </a>
-                </li> --}}
+                </li>
             </ul>
-            <div class="col-end">
-                &copy; {{ date('Y') }}. All right Reserved.
-            </div>
-            <div class="col-end">
-                Powered by
-                <a href="https://thirdeyesystem.com">Third Eye Systems</a>
+            <div class="mb-2 affiliations">
+                <div class="mb-2 text-xs">We are affiliated to</div>
+                <ul>
+                    <li class="mr-1 p-2"><a href="#"><img src="{{ asset('assets/front/img/ng.svg') }}"
+                                alt="Nepal Government Ministry of Culture, Tourism & Civil Aviation"></a></li>
+                    <li class="mr-1 p-2"><a href="#"><img src="{{ asset('assets/front/img/ntb.svg') }}" alt="Nepal Tourism Board"></a></li>
+                    <li class="mr-1 p-2"><a href="https://www.taan.org.np/"><img src="{{ asset('assets/front/img/taan.svg') }}"
+                                alt="Trekking Agencies' Association of Nepal"></a></li>
+                    <li class="p-2"><a href="#"><img src="{{ asset('assets/front/img/nma.svg') }}" alt="Nepal Mountaineering Association"></a></li>
+                </ul>
             </div>
         </div>
     </div>
-    <div class="ap bg-light">
-        <div class="container">
-
-            <div class="affiliations">
-                <div class="fs-xs">We are affiliated to</div>
-                <ul>
-                    <li><a href="#"><img src="{{ asset('assets/front/img/ng.svg') }}" alt="Nepal Government Ministry of Culture, Tourism & Civil Aviation"></a></li>
-                    <li><a href="#"><img src="{{ asset('assets/front/img/ntb.svg') }}" alt="Nepal Tourism Board"></a></li>
-                    <li><a href="https://www.taan.org.np/"><img src="{{ asset('assets/front/img/taan.svg') }}" alt="Trekking Agencies' Association of Nepal"></a></li>
-                    <li><a href="#"><img src="{{ asset('assets/front/img/nma.svg') }}" alt="Nepal Mountaineering Association"></a></li>
-                </ul>
+    <div class="bg-primary text-xs text-center pb-20">
+        <div class="container md:flex justify-between">
+            <div class="mb-2">
+                &copy; {{ date('Y') }}. All right Reserved.
             </div>
-
+            <div class="mb-4">
+                Powered by
+                <a href="https://thirdeyesystem.com">Third Eye Systems</a>
+            </div>
             <div class="payments">
                 <img src="{{ asset('assets/front/img/payment.svg') }}" alt="">
             </div>

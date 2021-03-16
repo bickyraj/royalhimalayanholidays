@@ -1,0 +1,43 @@
+// input:focus {
+//   box-shadow: 0 0 0.5rem transparentize($accent, 0.5),
+//     inset 0 0 0.2rem transparentize($accent, 0.5),
+//     0 0 1rem transparentize($accent, 0.5);
+// }
+// button:focus {
+//   box-shadow: 0 0 0.5rem transparentize($accent, 0.5),
+//     inset 0 0 0.2rem transparentize($accent, 0.5),
+//     0 0 1rem transparentize($accent, 0.5);
+// }
+input:focus,
+select:focus,
+textarea:focus {
+    outline: 1px dashed $primary;
+}
+.form-group {
+    label {
+        color: $primary;
+    }
+    input,
+    select,
+    textarea {
+        display: block;
+        border: 1px solid $lightgray;
+        background: $lightgray;
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+        width: 100%;
+        max-width: 30rem;
+    }
+}
+
+.has-icon {
+    position: relative;
+    .icon {
+        position: absolute;
+    }
+    &.icon-right .icon {
+        top: 50%;
+        right: 1rem;
+        transform: translateY(-50%);
+    }
+}

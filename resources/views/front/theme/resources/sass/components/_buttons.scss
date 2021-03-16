@@ -1,0 +1,38 @@
+.btn {
+    padding: 0.5rem 1rem;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0.5rem;
+    font-family: $font-display;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+
+    svg {
+        margin-left: 1rem;
+    }
+
+    &.btn-sm {
+        padding: 0.25rem 1rem;
+        font-size: 0.9rem;
+    }
+    @include breakpoint-up(md) {
+        padding: 1rem 2rem;
+    }
+}
+
+.btn-primary {
+    background: $primary;
+    color: white;
+    &:hover {
+        background: darken($primary, 10);
+    }
+}
+
+.btn-accent {
+    background: $accent;
+    color: white;
+    &:hover {
+        background: darken($accent, 5);
+    }
+}

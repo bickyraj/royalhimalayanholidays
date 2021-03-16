@@ -31,7 +31,7 @@ $mapImageUrl = $trip->mapImageUrl;
       /*overflow-y: scroll;*/
   }
 </style>
-@extends('layouts.front_inner')
+@extends('layouts.front')
 @section('meta_og_title'){!! $trip->trip_seo->meta_title??'' !!}@stop
 @section('meta_description'){!! $trip->trip_seo->meta_description??'' !!}@stop
 @section('meta_keywords'){!! $trip->trip_seo->meta_keywords??'' !!}@stop
@@ -39,320 +39,327 @@ $mapImageUrl = $trip->mapImageUrl;
 @section('meta_og_description'){!! $trip->trip_seo->meta_description??'' !!}@stop
 @section('meta_og_image'){!! $trip->trip_seo->ogImageUrl??'' !!}@stop
 @push('styles')
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tiny-slider@2.9.3/dist/tiny-slider.css">
+
 <script src="https://www.google.com/recaptcha/api.js?onload=CaptchaCallback&render=explicit" async defer></script>
 <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.0/dist/alpine.min.js" defer></script>
+<style>
+    .embed-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; } .embed-container iframe, .embed-container object, .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+</style>
 @endpush
 @section('content')
 <!-- Hero -->
 <section class="hero relative">
-    {{-- <img src="{{ asset('assets/front/img/hero.jpg') }}" alt=""> --}}
-    <div id="hero-slider" class="hero-slider">
+    <div class="hero-slider">
         @if(iterator_count($trip->trip_galleries))
-        @foreach($trip->trip_galleries as $gallery)
-           <div class="slide">
-               <img src="{{ $gallery->imageUrl }}" alt="">
-           </div>
-        @endforeach
+            @foreach($trip->trip_galleries as $gallery)
+                <img src="{{ $gallery->imageUrl }}" class="block" alt="">
+            @endforeach
         @endif
-    </div><!-- Slider -->
-    <div class="overlay lg:absolute">
-        <div class="container flex jcsb wrap">
-            <div class="caption">
-                <h2 class="mb-0">Annapurna Base Camp Tour</h2>
+    </div>
 
-                <div class="breadcrumb-wrapper">
+    <div class="overlay absolute w-full">
+        <div class="container flex justify-between items-end flex-wrap">
+            <div>
+                <div class="hero-slider-controls none md:block">
+                    <div class="flex">
+                        <button>
+                            <svg class="w-6 h-6">
+                                <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#arrownarrowleft" />
+                            </svg>
+                        </button>
+                        <button>
+                            <svg class="w-6 h-6">
+                                <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#arrownarrowright" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <h1 class="mb-2 font-display text-white text-4xl lg:text-4xl lg:text-5xl uppercase">
+                    <span>{{ $trip->name }}</span>
+                </h1>
+
+                <div class="breadcrumb-wrapper none md:block">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb fs-sm wrap">
                             <li class="breadcrumb-item"><a href="{{ url('/') }}">Home</a></li>
-                            <li class="breadcrumb-item"><a href="{{ route('front.trips.listing') }}">Trips</a></li>
+                            {{-- <li class="breadcrumb-item"><a href="">Nepal</a></li> --}}
+                            <li class="breadcrumb-item"><a href="{{ route('front.trips.listing') }}">Tours</a></li>
                             <li class="breadcrumb-item active" aria-current="page">{{ $trip->name }}</li>
                         </ol>
                     </nav>
                 </div>
-
             </div>
 
             <div class="ratings-wrapper none lg:block">
-                <div class="ratings d-flex align-items-center bg-primary px-3 py-1 text-secondary">
+                <div class="ratings d-flex align-items-center bg-primary text-white px-6 py-4 text-secondary">
                     <div>
-                        <svg>
-                            <use xlink:href="{{ asset('assets/front/img/sprite.svg#star') }}" />
-                        </svg>
-                        <svg>
-                            <use xlink:href="{{ asset('assets/front/img/sprite.svg#star') }}" />
-                        </svg>
-                        <svg>
-                            <use xlink:href="{{ asset('assets/front/img/sprite.svg#star') }}" />
-                        </svg>
-                        <svg>
-                            <use xlink:href="{{ asset('assets/front/img/sprite.svg#star') }}" />
-                        </svg>
-                        <svg>
-                            <use xlink:href="{{ asset('assets/front/img/sprite.svg#star') }}" />
-                        </svg>
-                        <div class="fs-xs">from 25 reviews</div>
+                        @for ($i = 0; $i < 5; $i++) <svg class="w-4 h-4 text-accent">
+                            <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#star" />
+                            </svg>
+                        @endfor
                     </div>
+                    <div class="text-xs">from 25 reviews</div>
                 </div>
             </div>
         </div>
     </div>
-
 </section>
 
-<section>
-
+<section class="bg-gray">
     <!-- Sticky Nav -->
-    <div class="tour-details-bar sticky-top">
-        <div class="container flex jcc aic">
-            <nav class="tour-details-tabs flex jcc aic" id="secondnav">
-                <ul class="nav">
-                    <li class="nav-item">
-                        <a href="#overview" class="flex aic nav-link">
-                            <svg class="icon mr-1">
-                                <use xlink:href="{{ asset('assets/front/img/sprite.svg#viewgrid') }}" />
+    <div id="tourDetailsBarIO"></div>
+    <div class="tdb bg-primary text-white sticky-top" style="z-index:99">
+        <div class="container flex justify-center items-center">
+            <nav class="tour-details-tabs flex justify-center items-center" id="secondnav">
+                <ul class="nav flex flex-wrap py-1">
+                    <li class="mr-2">
+                        <a href="#overview" class="flex items-center p-2 hover:bg-white hover:text-primary">
+                            <svg class="w-6 h-6 md:mr-2">
+                                <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#viewgrid" />
                             </svg>
-                            <span>Overview</span>
+                            <span class="none md:block">Overview</span>
                         </a>
                     </li>
                     @if (!$trip->trip_itineraries->isEmpty())
-                    <li class="nav-item">
-                        <a href="#itinerary" class="flex aic nav-link">
-                            <svg class="icon mr-1">
-                                <use xlink:href="{{ asset('assets/front/img/sprite.svg#clock') }}" />
-                            </svg>
-                            <span>Itinerary</span></a>
-                    </li>
+                        <li class="mr-2">
+                            <a href="#itinerary" class="flex items-center p-2 hover:bg-white hover:text-primary">
+                                <svg class="w-6 h-6 md:mr-2">
+                                    <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#clock" />
+                                </svg>
+                                <span class="none md:block">Itinerary</span></a>
+                        </li>
                     @endif
                     @if ($trip->trip_include_exclude)
-                    <li class="nav-item">
-                        <a href="#inclusions" class="flex aic nav-link">
-                            <svg class="icon mr-1">
-                                <use xlink:href="{{ asset('assets/front/img/sprite.svg#archive') }}" />
-                            </svg>
-                            <span>Inclusions</span>
-                        </a>
-                    </li>
+                        <li class="mr-2">
+                            <a href="#inclusions" class="flex items-center p-2 hover:bg-white hover:text-primary">
+                                <svg class="w-6 h-6 md:mr-2">
+                                    <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#archive" />
+                                </svg>
+                                <span class="none md:block">Inclusions</span>
+                            </a>
+                        </li>
                     @endif
                     @if (!$trip->trip_departures->isEmpty())
-                    <li class="nav-item">
-                        <a href="#date-price" class="flex aic nav-link">
-                            <svg class="icon mr-1">
-                                <use xlink:href="{{ asset('assets/front/img/sprite.svg#calendar') }}" />
-                            </svg>
-                            <span>Date & Price</span></a>
-                    </li>
+                        <li class="mr-2">
+                            <a href="#date-price" class="flex items-center p-2 hover:bg-white hover:text-primary">
+                                <svg class="w-6 h-6 md:mr-2">
+                                    <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#calendar" />
+                                </svg>
+                                <span class="none md:block">Date & Price</span>
+                            </a>
+                        </li>
                     @endif
-                    <li class="nav-item">
-                        <a href="#reviews" class="flex aic nav-link">
-                            <svg class="icon mr-1">
-                                <use xlink:href="{{ asset('assets/front/img/sprite.svg#chat') }}" />
-                            </svg><span>Review</span></a>
+                    <li class="mr-2">
+                        <a href="#reviews" class="flex items-center p-2 hover:bg-white hover:text-primary">
+                            <svg class="w-6 h-6 md:mr-2">
+                                <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#chat" />
+                            </svg>
+                            <span class="none md:block">Review</span>
+                        </a>
                     </li>
                     @if (!$trip->trip_faqs->isEmpty())
-                    <li class="nav-item">
-                        <a href="#faqs" class="flex aic nav-link">
-                            <svg class="icon mr-1">
-                                <use xlink:href="{{ asset('assets/front/img/sprite.svg#questionmarkcircle') }}" />
-                            </svg><span>FAQs</span></a>
-                    </li>
+                        <li class="mr-2">
+                            <a href="#faqs" class="flex items-center p-2 hover:bg-white hover:text-primary">
+                                <svg class="w-6 h-6 md:mr-2">
+                                    <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#questionmarkcircle" />
+                                </svg>
+                                <span class="none md:block">FAQs</span>
+                            </a>
+                        </li>
                     @endif
                 </ul>
             </nav>
         </div>
     </div><!-- Sticky Nav -->
 
-    <div class="container mt-2 mb-4">
+    <div class="container mt-2 pb-20">
 
-        <div class="grid lg:grid-cols-3 xl:grid-cols-4 gap-2 xl:gap-3">
-            <div class="lg:col-2 xl:col-3 relative" id="ss">
+        <div class="grid lg:grid-cols-3 xl:grid-cols-4 gap-2 lg:gap-10">
 
-                <div id="overview" class="tour-details-section pt-4">
-                    <div class="bg-white">
+            <div class="lg:col-span-2 xl:col-span-3 relative">
 
-                        <div class="lg:none">
-                            @include('front.elements.price_card')
-                        </div>
-                        <!-- <h2>Overview</h2> -->
-                        <div class="tabular grid lg:grid-cols-2 gap-2">
-                            <div class="table-item flex aic">
-                                <div class="icon mr-2">
-                                    <svg>
-                                        <use xlink:href="{{ asset('assets/front/img/sprite.svg#calendarduration') }}" />
+                <div class="lg:none">
+                    @include('front.elements.price_card')
+                </div>
+
+                <div id="overview" class="tds pt-10 bg-white px-4 lg:px-10 pb-4 mb-4">
+                    <div>
+                        <div class="mb-6 grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <div class="flex aic">
+                                <div class="mr-4">
+                                    <svg class="w-10 h-10 text-primary">
+                                        <use xlink:href="{{asset('img/sprite.svg')}}#calendarduration" />
                                     </svg>
                                 </div>
-                                <div class="data">
-                                    <p class="field-name">
+                                <div>
+                                    <div class="text-sm font-bold text-gray">
                                         Duration
-                                    </p>
-                                    <p class="field-value">
+                                    </div>
+                                    <div>
                                         {{ $trip->duration }} days
-                                    </p>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="table-item flex aic">
-                                <div class="icon mr-2">
-                                    <svg>
-                                        <use xlink:href="{{ asset('assets/front/img/sprite.svg#maxelevation') }}" />
+                            <div class="flex aic">
+                                <div class="mr-4">
+                                    <svg class="w-10 h-10 text-primary">
+                                        <use xlink:href="{{asset('img/sprite.svg')}}#maxelevation" />
                                     </svg>
                                 </div>
-                                <div class="data">
-                                    <p class="field-name">
+                                <div>
+                                    <div class="text-sm font-bold text-gray">
                                         Max. Elevation
-                                    </p>
-                                    <p class="field-value">
+                                    </div>
+                                    <div>
                                         {{ $trip->max_altitude }}m
-                                    </p>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="table-item flex aic">
-                                <div class="icon mr-2">
-                                    <svg>
-                                        <use xlink:href="{{ asset('assets/front/img/sprite.svg#groupsize') }}" />
+                            <div class="flex aic">
+                                <div class="mr-4">
+                                    <svg class="w-10 h-10 text-primary">
+                                        <use xlink:href="{{asset('img/sprite.svg')}}#groupsize" />
                                     </svg>
                                 </div>
-                                <div class="data">
-                                    <p class="field-name">
+                                <div>
+                                    <div class="text-sm font-bold text-gray">
                                         Group size
-                                    </p>
-                                    <p class="field-value">
+                                    </div>
+                                    <div>
                                         {{ $trip->group_size }}
-                                    </p>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="table-item flex aic">
-                                <div class="icon mr-2">
-                                    <svg>
-                                        <use xlink:href="{{ asset('assets/front/img/sprite.svg#level') }}" />
+                            <div class="flex aic">
+                                <div class="mr-4">
+                                    <svg class="w-10 h-10 text-primary">
+                                        <use xlink:href="{{asset('img/sprite.svg')}}#level" />
                                     </svg>
                                 </div>
-                                <div class="data">
-
-                                    <div class="field-name">
-
+                                <div>
+                                    <div class="text-sm font-bold text-gray">
                                         Level
                                     </div>
-                                    <div class="field-value">
+                                    <div>
                                         {{ $trip->difficulty_grade_value }}
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="table-item flex aic">
-                                <div class="icon mr-2">
-                                    <svg>
-                                        <use xlink:href="{{ asset('assets/front/img/sprite.svg#transportation') }}" />
+                            <div class="flex aic">
+                                <div class="mr-4">
+                                    <svg class="w-10 h-10 text-primary">
+                                        <use xlink:href="{{asset('img/sprite.svg')}}#transportation" />
                                     </svg>
                                 </div>
-                                <div class="data">
-                                    <div class="field-name">
+                                <div>
+                                    <div class="text-sm font-bold text-gray">
                                         Transportation
                                     </div>
-                                    <div class="field-value">
+                                    <div>
                                         {{ $trip->trip_info->transportation??'' }}
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="table-item flex aic">
-                                <div class="icon mr-2">
-                                    <svg>
-                                        <use xlink:href="{{ asset('assets/front/img/sprite.svg#bestseason') }}" />
+                            <div class="flex aic">
+                                <div class="mr-4">
+                                    <svg class="w-10 h-10 text-primary">
+                                        <use xlink:href="{{asset('img/sprite.svg')}}#bestseason" />
                                     </svg>
                                 </div>
-                                <div class="data">
-
-                                    <div class="field-name">
+                                <div>
+                                    <div class="text-sm font-bold text-gray">
                                         Best Season
                                     </div>
-                                    <div class="field-value">
+                                    <div>
                                         {{ $trip->trip_info->best_season??'' }}
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="table-item flex aic">
-                                <div class="icon mr-2">
-                                    <svg>
-                                        <use xlink:href="{{ asset('assets/front/img/sprite.svg#accomodation') }}" />
+                            <div class="flex aic">
+                                <div class="mr-4">
+                                    <svg class="w-10 h-10 text-primary">
+                                        <use xlink:href="{{asset('img/sprite.svg')}}#accomodation" />
                                     </svg>
                                 </div>
-                                <div class="data">
-                                    <div class="field-name">
+                                <div>
+                                    <div class="text-sm font-bold text-gray">
                                         Accomodation
                                     </div>
-                                    <div class="field-value">
+                                    <div>
                                         {{ $trip->trip_info->accomodation??'' }}
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="table-item flex aic">
-                                <div class="icon mr-2">
-                                    <svg>
-                                        <use xlink:href="{{ asset('assets/front/img/sprite.svg#meals') }}" />
+                            <div class="flex aic">
+                                <div class="mr-4">
+                                    <svg class="w-10 h-10 text-primary">
+                                        <use xlink:href="{{asset('img/sprite.svg')}}#meals" />
                                     </svg>
                                 </div>
-                                <div class="data">
-                                    <div class="field-name">
+                                <div>
+                                    <div class="text-sm font-bold text-gray">
                                         Meals
                                     </div>
-                                    <div class="field-value">
+                                    <div>
                                         {{ $trip->trip_info->meals??'' }}
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="table-item flex aic">
-                                <div class="icon mr-2">
-                                    <svg>
-                                        <use xlink:href="{{ asset('assets/front/img/sprite.svg#startsat') }}" />
+                            <div class="flex aic">
+                                <div class="mr-4">
+                                    <svg class="w-10 h-10 text-primary">
+                                        <use xlink:href="{{asset('img/sprite.svg')}}#startsat" />
                                     </svg>
                                 </div>
-                                <div class="data">
-
-                                    <div class="field-name">
-
+                                <div>
+                                    <div class="text-sm font-bold text-gray">
                                         Starts at
                                     </div>
-                                    <div class="field-value">
+                                    <div>
                                         {{ $trip->starting_point }}
                                     </div>
                                 </div>
                             </div>
 
                             <div class="table-item flex aic">
-                                <div class="icon mr-2">
-                                    <svg>
-                                        <use xlink:href="{{ asset('assets/front/img/sprite.svg#endsat') }}" />
+                                <div class="mr-4">
+                                    <svg class="w-10 h-10 text-primary">
+                                        <use xlink:href="{{asset('img/sprite.svg')}}#endsat" />
                                     </svg>
                                 </div>
-                                <div class="data">
-
-                                    <div class="field-name">
+                                <div>
+                                    <div class="text-sm font-bold text-gray">
                                         Ends at
                                     </div>
-                                    <div class="field-value">
+                                    <div>
                                         {{ $trip->ending_point }}
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="table-item flex aic lg:col-2">
-                                <div class="icon mr-2">
-                                    <svg>
-                                        <use xlink:href="{{ asset('assets/front/img/sprite.svg#triproute') }}" />
+                            <div class="flex aic lg:col-span-2">
+                                <div class="mr-4">
+                                    <svg class="w-10 h-10 text-primary">
+                                        <use xlink:href="{{asset('img/sprite.svg')}}#triproute" />
                                     </svg>
                                 </div>
-                                <div class="data">
 
-                                    <div class="field-name">
-
+                                <div>
+                                    <div class="text-sm font-bold text-gray">
                                         Trip Route
                                     </div>
-                                    <div class="field-value">
+                                    <div>
                                         {{ $trip->trip_info->trip_route??'' }}
                                     </div>
                                 </div>
@@ -360,720 +367,582 @@ $mapImageUrl = $trip->mapImageUrl;
 
                         </div>
 
-                        <div class="px-3 pb-2">
+                        <div class="px-3">
 
-                            <h3>Highlights</h3>
-                            <div class="highlights">
-                            {!! ($trip->trip_info)?$trip->trip_info->highlights:'' !!}
-                            </div>
+                            <h3 class="mb-2 font-display text-2xl text-primary">Highlights</h3>
+                            <ul class="highlights mb-4">
+                                {!! ($trip->trip_info)?$trip->trip_info->highlights:'' !!}
+                            </ul>
 
                             <div id="overview-text" class="lim collapse">
                                 {!! $trip->trip_info->overview??'' !!}
                             </div>
-                            <p class="text-center">
-                                <button id="toggle-overview" class="btn btn-gray" data-bs-toggle="collapse" data-bs-target="#overview-text">Show
-                                    More</button>
-                            </p>
 
-                            <div class="trip-note bg-light mb-3">
-                                <p class="font-weight-bold mb-0"><i class="fas fa-info"></i> Important Note</p>
-                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam aspernatur corporis, quibusdam
-                                    nostrum itaque cum quod quaerat ea! Unde magnam provident quod! Fugit in enim deleniti ex, tenetur modi
-                                    neque?</p>
+                            <div class="bg-light mb-3 p-4">
+                                <h3 class="mb-2 font-display text-xl text-primary"> Important Note</h3>
+                                <p class="mb-0 text-sm">
+                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem sequi vero
+                                    quasi, error impedit ratione maxime eaque perspiciatis reprehenderit tempore
+                                    delectus quibusdam ipsam, ipsa pariatur dolore ea veniam temporibus illo eum
+                                    deleniti quas, a vitae. Dolorum explicabo, ex ullam obcaecati blanditiis tenetur
+                                    dicta similique. Voluptatum qui molestias consequuntur minus praesentium!
+                                </p>
                             </div>
                         </div>
                     </div>
-
                 </div>
 
-                @php
-                    $x_data_false = [];
-                    $x_data_true = [];
-                    foreach ($trip->trip_itineraries as $itinerary) {
-                        $x_data_false['day' . $itinerary->id . 'Open'] = false;
-                        $x_data_true['day' . $itinerary->id . 'Open'] = true;
-                    }
-                    $x_data_false['expandAll'] = false;
-                @endphp
-                <div id="itinerary" class="tour-details-section" x-data=@json($x_data_false)>
-                    <div class="p-3">
-                        <h2 class="fs-xl">Trip Itinerary</h2>
-                        <button class="btn btn-sm btn-gray expand-all" @click="expandAll =! expandAll">Expand All</button>
-                        <button class="btn btn-sm btn-gray collapse-all" @click="expandAll = false">Collapse All</button>
-                        <div class="itinerary">
-                            @forelse ($trip->trip_itineraries as $itinerary)
-                                <div class="itinerary-row">
-                                    <div class="day">
-                                        <p class="d">Day</p>
-                                        {{ $itinerary->day }}
-                                    </div>
+                <div class='mb-4 embed-container'><iframe src='https://www.youtube.com/embed//dFLxa0VwY-E'
+                        frameborder='0' allowfullscreen></iframe></div>
 
-                                    <div class="itinerary-text">
-                                        <div class="collapse-toggle">
-                                            <button :aria-expanded="day{{ $itinerary->id }}Open" aria-controls="day{{ $itinerary->id }}" @click="day{{ $itinerary->id }}Open=!day{{ $itinerary->id }}Open">
-                                                <h3 class="text-left fs-lg">{{ $itinerary->name }}</h3>
-                                                <svg class="icon-md shrink-0">
-                                                    <use xlink:href="{{ asset('assets/front/img/sprite.svg#plus') }}" />
-                                                </svg>
-                                            </button>
+                <div id="itinerary" class="tds pt-10 bg-white px-4 lg:px-10 pb-4 mb-4" x-data="{
+                        day1Open:true,
+                        @for ($i = 1; $i < $trip->duration ; $i++)
+                            day{{ $i + 1 }}Open:false,
+                        @endfor
+                        }">
+                    <div class="flex justify-between items-end flex-wrap mb-4">
+                        <h2 class="text-4xl lg:text-5xl font-display text-primary uppercase">Trip Itinerary</h2>
+                        <div>
+                            <button class="mb-2 btn btn-sm btn-primary expand-all" @click="
+                                    @for ($i = 0; $i < $trip->duration; $i++)
+                                        day{{ $i + 1 }}Open =
+                                    @endfor
+                                     true">Expand All</button>
+                            <button class="mb-2 btn btn-sm btn-primary collapse-all" @click="
+                                    @for ($i = 0; $i < $trip->duration; $i++)
+                                        day{{ $i + 1 }}Open =
+                                    @endfor
+                                    false">Collapse All</button>
+                        </div>
+                    </div>
+                    <div class="itinerary mb-4">
+                        @for ($i = 0; $i < $trip->duration; $i++)
+                            <div class="mb-2 border-light">
+                                <button class="flex items-center w-full p-2 text-primary text-left"
+                                    :aria-expanded="day{{ $i + 1 }}Open" aria-controls="day{{ $i+1 }}"
+                                    @click="day{{ $i+1 }}Open=!day{{ $i+1 }}Open">
+                                    <div class="flex items-center mr-4">
+                                        <div class="mr-2 text-sm">Day</div>
+                                        <div class="font-display text-primary text-2xl">
+                                            {{ $i + 1 }}
                                         </div>
-                                        <div id="day{{ $itinerary->id }}" class="day-details" x-show.transition="day{{$itinerary->id}}Open || expandAll">
+                                    </div>
+                                    <div class="flex justify-between flex-grow-1">
+                                        <h3 class="font-display text-xl">{{ Str::title($faker->words(5, true)) }}</h3>
+                                        <svg class="w-6 h-6 flex-shrink-0" x-show="!day{{ $i + 1 }}Open">
+                                            <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#plus" />
+                                        </svg>
+                                        <svg class="w-6 h-6 flex-shrink-0" x-show="day{{ $i + 1 }}Open">
+                                            <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#minus" />
+                                        </svg>
+                                    </div>
+                                </button>
+                                <div id="day{{ $i+1 }}" class="border-top-light p-4" x-cloak
+                                    x-show.transition="day{{ $i+1 }}Open">
+                                    <div class="grid xl:grid-cols-3 gap-4">
+                                        <img src="{{ asset('assets/front/img/hero.jpg') }}" alt="">
+                                        <div class="xl:col-span-2">
                                             <p>
-                                                {!! $itinerary->description !!}
+                                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia minima
+                                                nam vel veritatis? Est
+                                                laborum
+                                                consectetur temporibus expedita veritatis perferendis beatae sapiente
+                                                unde, deserunt eveniet
+                                                architecto
+                                                quisquam autem hic! Ut?
                                             </p>
                                         </div>
                                     </div>
                                 </div>
-                            @empty
-                            @endforelse
+                            </div>
+                            @endfor
+                    </div>
+                    <div class="lg:flex justify-between items-center bg-light p-4">
+                        <div>
+                            Not satisfied with this itinerary? <b class="text-primary">Make your own</b>.
                         </div>
+                        <a href="{{ route('tours.customize', $trip->slug) }}"
+                            class="btn btn-sm btn-primary">Customize</a>
                     </div>
                 </div>
 
-                @if ($trip->trip_include_exclude)
-                <div id="inclusions" class="tour-details-section">
+                <div id="inclusions" class="tds pt-10 bg-white px-4 lg:px-10 pb-4 mb-4">
                     <div class="bg-white p-3">
-                        <h2 class="fs-xl">Inclusions</h2>
                         <div class="grid lg:grid-cols-2 gap-1">
-
-                            @if($trip->trip_include_exclude)
-                            <div class="includes">
-
-                                <h3>Includes</h3>
-                                  <?= $trip->trip_include_exclude->include; ?>
+                            <div>
+                                <h2 class="text-3xl lg:text-4xl font-display text-primary uppercase">Includes</h2>
+                                <ul class="includes">
+                                    @for ($i = 0; $i < 5; $i++) <li class="flex mb-2">
+                                        <svg class="w-6 h-6 mr-1 flex-shrink-0 text-green">
+                                            <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#check" />
+                                        </svg>
+                                        {{ $faker-> text() }}
+                                        </li>
+                                        @endfor
+                                </ul>
                             </div>
-                            @endif
-                            {{-- <ul class="includes">
-                                <li class="flex">
-                                    <svg class="icon-md mr-1 shrink-0">
-                                        <use xlink:href="{{ asset('assets/front/img/sprite.svg#check') }}" />
-                                    </svg>
 
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur dolor atque error iste!
-                                    Praesentium, possimus.</li>
-                                <li class="flex">
-                                    <svg class="icon-md mr-1 shrink-0">
-                                        <use xlink:href="{{ asset('assets/front/img/sprite.svg#check') }}" />
-                                    </svg>
+                            <div>
+                                <h2 class="text-3xl lg:text-4xl font-display text-primary uppercase">Doesn't Include
+                                </h2>
+                                <ul class="excludes">
+                                    @for ($i = 0; $i < 4; $i++) <li class="flex mb-2">
+                                        <svg class="w-6 h-6 mr-1 flex-shrink-0 text-red">
+                                            <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#x" />
+                                        </svg>
 
-                                    Commodi dolore iure laborum illo quas accusantium, eum eos mollitia enim quos ad nisi. Mollitia.
-                                </li>
-                                <li class="flex">
-                                    <svg class="icon-md mr-1 shrink-0">
-                                        <use xlink:href="{{ asset('assets/front/img/sprite.svg#check') }}" />
-                                    </svg>
-
-                                    Ad minima odit voluptatem voluptas quisquam soluta ab culpa, itaque hic vero eveniet eaque rerum?
-                                </li>
-                                <li class="flex">
-                                    <svg class="icon-md mr-1 shrink-0">
-                                        <use xlink:href="{{ asset('assets/front/img/sprite.svg#check') }}" />
-                                    </svg>
-
-                                    Exercitationem error fugit non asperiores repellendus, nemo eveniet ipsum sit veritatis, eum
-                                    molestias praesentium placeat!</li>
-                                <li class="flex">
-                                    <svg class="icon-md mr-1 shrink-0">
-                                        <use xlink:href="{{ asset('assets/front/img/sprite.svg#check') }}" />
-                                    </svg>
-
-                                    Commodi nostrum nulla fuga, natus perspiciatis laborum hic omnis accusamus blanditiis, debitis
-                                    cupiditate fugiat? Blanditiis.</li>
-                            </ul> --}}
-
-                            {{-- <ul class="excludes">
-                                <li class="flex">
-                                    <svg class="icon-md mr-1 shrink-0">
-                                        <use xlink:href="{{ asset('assets/front/img/sprite.svg#x') }}" /></svg>
-
-                                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolorum provident accusantium quos
-                                    eligendi, aliquid earum.</li>
-                                <li class="flex">
-                                    <svg class="icon-md mr-1 shrink-0">
-                                        <use xlink:href="{{ asset('assets/front/img/sprite.svg#x') }}" /></svg>
-
-                                    Fuga sed impedit eius, ipsum ratione, at veritatis quam quae magni, id tenetur suscipit quos?</li>
-                                <li class="flex">
-                                    <svg class="icon-md mr-1 shrink-0">
-                                        <use xlink:href="{{ asset('assets/front/img/sprite.svg#x') }}" /></svg>
-
-                                    Aliquid molestias dolorem iusto aut recusandae cum repellendus mollitia deserunt, reprehenderit at
-                                    quia accusamus enim.</li>
-                                <li class="flex">
-                                    <svg class="icon-md mr-1 shrink-0">
-                                        <use xlink:href="{{ asset('assets/front/img/sprite.svg#x') }}" /></svg>
-
-                                    Obcaecati quod accusamus accusantium aliquam suscipit, ab quas delectus, officiis possimus
-                                    consequatur quasi fugiat aliquid?</li>
-                                <li class="flex">
-                                    <svg class="icon-md mr-1 shrink-0">
-                                        <use xlink:href="{{ asset('assets/front/img/sprite.svg#x') }}" /></svg>
-
-                                    Sint cum perferendis autem, temporibus esse laudantium maxime sit assumenda aperiam, voluptas amet
-                                    neque accusamus?</li>
-                            </ul> --}}
-                            @if($trip->trip_include_exclude)
-                            <div class="excludes">
-                                <h3>Excludes</h3>
-                                    <?= $trip->trip_include_exclude->exclude; ?>
+                                        {{ $faker-> text() }}
+                                        </li>
+                                        @endfor
+                                </ul>
                             </div>
-                            @endif
                         </div>
                         <div class="complimentary p-2">
-                            <h3>Complimentary</h3>
-
-                            <div class="trip-includes" style="padding: 0px;">
-                              <?= $trip->trip_include_exclude->complimentary ??''; ?>
-                            </div>
-                            {{-- <ul>
-                                <li class="flex">
-                                    <svg class="icon-md mr-1 shrink-0">
-                                        <use xlink:href="{{ asset('assets/front/img/sprite.svg#plus') }}" /></svg>
-
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus expedita aut iure quis odit
-                                    dignissimos.</li>
-                                <li class="flex">
-                                    <svg class="icon-md mr-1 shrink-0">
-                                        <use xlink:href="{{ asset('assets/front/img/sprite.svg#plus') }}" /></svg>
-
-                                    Perferendis quasi reiciendis repellendus ratione, iure atque quia voluptatibus fugiat quaerat
-                                    voluptatem, aperiam a dolorem?</li>
-                                <li class="flex">
-                                    <svg class="icon-md mr-1 shrink-0">
-                                        <use xlink:href="{{ asset('assets/front/img/sprite.svg#plus') }}" /></svg>
-
-                                    Voluptate totam maiores neque laudantium. Placeat maxime odit sequi tenetur quo vero? Commodi, aperiam
-                                    deleniti?</li>
-                                <li class="flex">
-                                    <svg class="icon-md mr-1 shrink-0">
-                                        <use xlink:href="{{ asset('assets/front/img/sprite.svg#plus') }}" /></svg>
-
-                                    Quibusdam commodi laboriosam quia voluptatum velit officiis, explicabo nulla! Impedit, ut? Totam porro
-                                    tenetur magnam.</li>
-                            </ul> --}}
+                            <h2 class="text-3xl lg:text-4xl font-display text-primary uppercase">Complimentary</h2>
+                            <ul>
+                                @for ($i = 0; $i < 5; $i++) <li class="flex mb-2">
+                                    <svg class="w-6 h-6 mr-1 flex-shrink-0 text-accent">
+                                        <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#plus" />
+                                    </svg>
+                                    {{ $faker-> text() }}
+                                    </li>
+                                    @endfor
+                            </ul>
                         </div>
                     </div>
                 </div>
-                @endif
 
-                @if (!$trip->trip_departures->isEmpty())
-                <div id="date-price" class="tour-details-section">
-                    <div class="bg-white p-3">
-                        <h2 class="fs-xl">Upcoming Departure Dates</h2>
-                        <div class="table-wrapper-scroll">
-                            <table class="table mb-2">
-                                <thead>
-                                    <th class="upper text-left">Date</th>
-                                    <th class="upper text-left">Price</th>
-                                    <th class="upper text-left">Seats Left</th>
-                                    <th></th>
-                                </thead>
-                                <tbody>
-                                    @foreach($trip->trip_departures as $departure)
-                                        <tr>
-                                            <td>
-                                                <div class="flex aic">
-                                                    <svg class="icon mr-1 text-primary">
-                                                        <use xlink:href="{{ asset('assets/front/img/sprite.svg#calendar') }}" />
-                                                    </svg>
-                                                    {{ formatDate($departure->from_date) }} — {{ formatDate($departure->to_date) }}
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="flex aic">
-                                                    <svg class="icon mr-1 text-primary">
-                                                        <use xlink:href="{{ asset('assets/front/img/sprite.svg#tag') }}" />
-                                                    </svg>
-                                                    <div>
-                                                        <small class="text-gray"><s>USD {{ number_format($trip->cost) }}</s></small><br>
-                                                        <span class="text-green">USD <b>{{ number_format($departure->price) }}</b></span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="flex aic">
-                                                    <svg class="icon mr-1 text-primary">
-                                                        <use xlink:href="{{ asset('assets/front/img/sprite.svg#users') }}" />
-                                                    </svg>
-                                                    {{ $departure->seats }}
-                                                </div>
-                                            </td>
-                                            <td><a href="{{ route('front.trips.departure-booking', ['slug' => $trip->slug, 'id' => $departure->id]) }}" class="btn btn-sm btn-theme">Book now</a></td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                            <!-- <p class="text-center"><button id="more-dates" class="btn btn-sm btn-gray">See more dates</button></p> -->
-                        </div>
-                    </div>
-                </div>
-                @endif
+                <div id="reviews" class="tds pt-10 bg-white px-4 lg:px-10 pb-4 mb-4">
+                    <div class="lg:flex justify-between items-center mb-4">
+                        <h2 class="text-4xl lg:text-5xl font-display text-primary uppercase">Reviews
+                        </h2>
 
-                <div id="reviews" class="tour-details-section">
-                    <div class="bg-white p-3">
-                        <h2 class="fs-xl">Reviews</h2>
-                        <div class="grid gap-1 mb-2">
-                            @if(iterator_count($trip->trip_reviews))
-                                @foreach($trip->trip_reviews()->where('status', 1)->get() as $review)
-                                    <div class="review">
-                                        <div class="review__content">
-                                            <h2 class="fs-lg">{{ $review->title }}</h2>
-                                            <p class="fs-sm">{{ $review->review }}</p>
-                                        </div>
-                                        <div class="review__person">
-                                            <div class="image">
-                                                <img src="{{ $review->thumbImageUrl }}" alt="">
-                                            </div>
-                                            <div>
-                                                <div class="name">{{ $review->review_name }}</div>
-                                                <div class="from">{{ $review->review_country }}</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            @endif
-                        </div>
-                        <p class="text-center">
-                            <a href="{{ route('front.reviews.create') }}" class="btn btn-theme mr-1" data-toggle="modal" data-target="#review-modal">
+                        <div>
+                            <a href="write-review.php" class="btn btn-primary btn-sm mr-1" data-toggle="modal"
+                                data-target="#review-modal">
                                 Write a review</a>
-                            <a href="{{ route('front.reviews.index') }}" class="theme">See more reviews
-                                <svg><use xlink:href="{{ asset('assets/front/img/sprite.svg#arrownarrowright') }}" /></svg>
-                            </a>
-                        </p>
-                    </div>
-                </div>
-
-                {{-- faqs --}}
-                @if(!$trip->trip_faqs->isEmpty())
-                <div id="faqs" class="tour-details-section mb-4">
-                    <div class="bg-white p-3">
-                        <h2 class="fs-xl">Frequently Asked Questions</h2>
-                        <div class="accordion" id="faq-accordion">
-                            @foreach($trip->trip_faqs as $faq)
-                                <div class="accordion-item">
-                                    <h3 class="accordion-header mb-0" id="heading{{ $faq->id }}">
-                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ $faq->id }}" aria-expanded="true" aria-controls="collapse{{ $faq->id }}">
-                                            {{ $faq->title }}
-                                        </button>
-                                    </h3>
-                                    <div id="collapse{{ $faq->id }}" class="accordion-collapse collapse show" aria-labelledby="heading{{ $faq->id }}" data-bs-parent="#faq-accordion">
-                                        <div class="accordion-body fs-sm">
-                                            {!! $faq->description !!}
-                                        </div>
-                                    </div>
-                                </div>
-                            @endforeach
                         </div>
                     </div>
-                </div>
-                @endif
-
-                <p class="mb-5">
-                    <a href="{{ route('front.trips.booking', $trip->slug) }}" class="btn btn-theme">Book Now</a>
-                </p>
-            </div>
-
-            <aside class="py-4">
-                @include('front.elements.price_card')
-
-                <div class=" mb-3 text bg-primary text-white p-2">
-                    <h4 class="mb-1 font-display upper">
-                        You can customize this trip
-                    </h4>
-                    <ul class="mb-2 fs-sm">
-                        <li><svg class="icon text-light">
-                                <use xlink:href="{{ asset('assets/front/img/sprite.svg#questionmarkcircle') }}" />
-                            </svg>
-                            Have a big group?</li>
-                        <li><svg class="icon text-light">
-                                <use xlink:href="{{ asset('assets/front/img/sprite.svg#questionmarkcircle') }}" />
-                            </svg>
-                            Budget problem?</li>
-                        <li><svg class="icon text-light">
-                                <use xlink:href="{{ asset('assets/front/img/sprite.svg#questionmarkcircle') }}" />
-                            </svg>
-                            Date & Itinerary problem?</li>
-                        <li><svg class="icon text-light">
-                                <use xlink:href="{{ asset('assets/front/img/sprite.svg#questionmarkcircle') }}" />
-                            </svg>
-                            Wanna add / remove services?</li>
-                    </ul>
-                    <div class="fs-xs mb-2">
-                        All right, we'll help you personalize your trips
+                    <div class="grid lg:grid-cols-2 gap-2 lg:gap-3">
+                        <div class="review p-4">
+                            <div class="review__content">
+                                <h2 class="mb-2 font-display text-2xl text-primary">Rewarding trek with best guides
+                                </h2>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio reiciendis
+                                    fugiat aperiam beatae et aspernatur consequuntur, iste consequatur totam
+                                    eligendi alias quae dolor iure quam exercitationem cumque aliquid architecto
+                                    assumenda!</p>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="mr-2">
+                                    <img src="{{ asset('assets/front/img/portrait1.jpg') }}" alt="">
+                                </div>
+                                <div>
+                                    <div class="font-bold">Emory McCullough</div>
+                                    <div class="text-sm text-gray">Virgin Islands, U.S.</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="review p-4">
+                            <div class="review__content">
+                                <h2 class="mb-2 font-display text-2xl text-primary">Never had so much fun!</h2>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio reiciendis
+                                    fugiat aperiam beatae et aspernatur consequuntur, iste consequatur totam
+                                    eligendi alias quae dolor iure quam exercitationem cumque aliquid architecto
+                                    assumenda!</p>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="mr-2">
+                                    <img src="{{ asset('assets/front/img/portrait2.jpg') }}" alt="">
+                                </div>
+                                <div>
+                                    <div class="font-bold">Ola Murray</div>
+                                    <div class="text-sm text-gray">Gambia</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <a href="{{ route('front.trips.customize', $trip->slug) }}" class="btn btn-sm btn-theme" title="Customize this tour">
-                        Customize
-                        <svg class="icon">
-                            <use xlink:href="{{ asset('assets/front/img/sprite.svg#adjustments') }}" />
+
+                    <a href="reviews.php" class="theme">See more reviews
+                        <svg>
+                            <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#arrownarrowright" />
                         </svg>
                     </a>
                 </div>
 
-                @include('front.elements.enquiry')
-
                 <div class="mb-4">
-                    <div class="card-header">
-                        <h2 class="mb-2">Map & Route</h2>
-                    </div>
-                    <div class="card-body p-0" x-data="{lightBoxOpen: false}">
-                        <!-- <a data-fancybox data-caption="Annapurna Base Camp Trek Map" href="img/annapurnaregion-01.jpg">
-                            <img class="img-fluid" src="{{ asset('assets/front/img/annapurnaregion-01.jpg') }}" alt="">
-                        </a> -->
-                        <a @click.prevent="lightBoxOpen=true" href="img/annapurnaregion-01.jpg">
-                            <img class="img-fluid" src="{{ asset('assets/front/img/annapurnaregion-01.jpg') }}" alt="">
-                        </a>
-                        <div class="fixed cover z-100 bg-light" x-show="lightBoxOpen===true">
-                            <div class="h-100 flex jcc aic">
-                                <div class="h-100">
-                                    <img src="{{ asset('assets/front/img/annapurnaregion-01.jpg') }}" alt="" class="h-100 wheelzoom" @click.away="lightBoxOpen=false">
-                                </div>
-                            </div>
-                            <button class="absolute" style="top:1rem;right:1rem;" @click="lightBoxOpen==false">
-                                <svg class="icon icon-md">
-                                    <use xlink:href="{{ asset('assets/front/img/sprite.svg#x') }}" />
+                    <iframe src="https://www.google.com/maps/d/embed?mid=1o2LaX1o68hVBiycWHWDrK_F18H1epiGB" width="100%"
+                        height="480" class="border-none"></iframe>
+                </div>
+
+                <div id="faqs" class="tds pt-10 bg-white px-4 lg:px-10 pb-4 mb-4">
+                    <h2 class="mb-4 text-4xl lg:text-5xl font-display text-primary uppercase">Frequently Asked Questions</h2>
+
+                    <div class="mb-4" x-data="{active: 'none'}">
+                        @for ($i = 0; $i < 6; $i++) <div class="mb-1 border-light">
+                            <button class="flex justify-between items-center w-full p-2 text-left"
+                                @click="active = (active === {{ $i }} ? 'none' : {{ $i }})">
+                                <h3 class="font-display text-xl text-primary">{{ $faker->sentence() }}</h3>
+
+                                <svg class="w-6 h-6 flex-shrink-0 text-primary" x-show="active!=={{ $i }}">
+                                    <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#plus" />
+                                </svg>
+                                <svg class="w-6 h-6 flex-shrink-0 text-primary" x-show="active==={{ $i }}">
+                                    <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#minus" />
                                 </svg>
                             </button>
-                        </div>
+                            <div class="p-4" x-cloak x-show.transition="active==={{ $i }}">
+                                <p class="mb-0">
+                                    {{ $faker->paragraph() }}
+                                </p>
+                            </div>
                     </div>
+                    @endfor
                 </div>
 
-                <div class=" experts-card">
-                    <div class="grid grid-cols-3">
-                        <div class="col-2">
-                            <p class="mb-0">Still confused?</p>
-                            <h3 class="mb-2">Talk to our experts</h3>
-                        </div>
-                        <div>
-                            <svg class="icon-lg">
-                                <use xlink:href="{{ asset('assets/front/img/sprite.svg#customersupport') }}" />
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="experts-phone flex mb-1">
-                        <a href="tel:+977 -9851071767" class="flex aic">
-                            <svg class="icon-md mr-1">
-                                <use xlink:href="{{ asset('assets/front/img/sprite.svg#phone') }}" />
-                            </svg>
-                            +977 -9851071767 (Dipak)
-                        </a>
-                    </div>
-                    <div class="experts-phone flex mb-3">
-                        <a href="mailto:
-                                info@holidaytoursnepal.com" class="flex aic">
-                            <svg class="icon-md mr-1">
-                                <use xlink:href="{{ asset('assets/front/img/sprite.svg#mail') }}" />
-                            </svg>
-                            info@holidaytoursnepal.com
-                        </a>
-                    </div>
+                <a href="#" class="mb-2 theme">Read more FAQs
+                    <svg>
+                        <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#arrownarrowright" />
+                    </svg>
+                </a>
+            </div>
 
-
-                </div>
-
-                <div class="mb-3 p-2 bg-light">
-                    <a href="{{ Setting::get('facebook') }}" class="text-primary hover:text-accent mr-1">
-                        <svg class="icon-md">
-                            <use xlink:href="{{ asset('assets/front/img/sprite.svg#facebookmessenger') }}" /></svg>
+            <div class="flex justify-between flex-wrap mb-4">
+                <div class="flex mb-2">
+                    <a href="{{ route('tours.book', $trip->slug) }}" class="btn btn-accent mr-2">Book Now</a>
+                    <a href="{{ route('tours.customize', $trip->slug) }}" class="btn btn-primary">
+                        <svg class="w-6 h-6 mr-2">
+                            <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#adjustments" />
+                        </svg>
+                        Customize
                     </a>
-                    <a href="{{ Setting::get('viber') }}" class="text-primary hover:text-accent mr-1">
-                        <svg class="icon-md">
-                            <use xlink:href="{{ asset('assets/front/img/sprite.svg#viber') }}" /></svg>
-                    </a>
-                    <a href="{{ Setting::get('whatsapp') }}" class="text-primary hover:text-accent mr-1">
-                        <svg class="icon-md">
-                            <use xlink:href="{{ asset('assets/front/img/sprite.svg#whatsapp') }}" /></svg>
-                    </a>
-                    <a href="{{ Setting::get('skype') }}" class="text-primary hover:text-accent mr-1">
-                        <svg class="icon-md">
-                            <use xlink:href="{{ asset('assets/front/img/sprite.svg#skype') }}" /></svg>
-                    </a>
-                    {{-- <a href="{{ Setting::get('viber') }}" class="text-primary hover:text-accent mr-1">
-                        <svg class="icon-md">
-                            <use xlink:href="{{ asset('assets/front/img/sprite.svg#weixin') }}" /></svg>
-                    </a> --}}
                 </div>
-
-                @include('front.elements.essential_trip_information')
-
-                @if(iterator_count($trip->addon_trips))
-                <div class="mb-3">
-                        @foreach($trip->addon_trips as $addon_trip)
-                            @include('front.elements.addon_trip', ['trip' => $addon_trip])
-                        @endforeach
-                    </div>
-                @endif
-
-                <div>
-                    <img src="https://www.tripadvisor.com/TripAdvisorInsights/wp-content/uploads/2018/01/widget_long_form_copy.jpg%22" alt="">
+                <div class="flex">
+                    <a href="#" class="flex items-center mr-2 p-1 text-accent" title="Print tour details">
+                        <svg class="w-6 h-6 flex-shrink-0 mr-2">
+                            <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#printer" />
+                        </svg>
+                        <span class="font-display uppercase">Print Tour Details</span>
+                    </a>
+                    <a href="#" class="flex items-center p-1 text-accent" title="">
+                        <svg class="w-6 h-6 flex-shrink-0 mr-2">
+                            <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#download" />
+                        </svg>
+                        <span class="font-display uppercase">Download Tour Brochure</span>
+                    </a>
                 </div>
+            </div>
 
-                <div class="sticky-top sticky-price none lg:block" style="top: 8rem;">
-                    @include('front.elements.price_card')
-                </div>
-            </aside>
-        </div>
-    </div>
-
-    <!-- Featured -->
-    @if (!$trip->similar_trips->isEmpty())
-    <div class="featured section bg-light py-4">
-        <div class="container">
-            <h2 class="fs-lg mb-2">Similar Tours</h2>
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-2 xl:gap-3">
-                @forelse ($trip->similar_trips as $trip)
-                    @include('front.elements.tour-card', ['tour' => $trip])
-                @empty
-
-                @endforelse
+            <div>
+                <h2 class="mb-2 lg:text-xl font-display text-primary uppercase">Share this tour</h2>
+                <a href="#" class="text-primary hover:text-accent mr-2">
+                    <svg class="w-6 h-6">
+                        <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#facebook" />
+                    </svg>
+                </a>
+                <a href="#" class="text-primary hover:text-accent mr-2">
+                    <svg class="w-6 h-6">
+                        <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#twitter" />
+                    </svg>
+                </a>
+                <a href="#" class="text-primary hover:text-accent">
+                    <svg class="w-6 h-6">
+                        <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#instagram" />
+                    </svg>
+                </a>
             </div>
         </div>
-    </div> <!-- Featured -->
-    @endif
+
+        <aside class="pt-10">
+
+            @include('partials.pricecard')
+
+            <a href="booking-form.php" class="mb-8 btn btn-accent w-full">Ask for agency price</a>
+
+            @include('partials.enquiry')
+
+            <div class="mb-8">
+                <div class="card-header">
+                    <h2 class="mb-2 font-display text-2xl text-primary uppercase">Route Map</h2>
+                </div>
+                <div class="card-body p-0">
+                    <a data-fancybox data-caption="Annapurna Base Camp Trek Map"
+                        href="{{ asset('assets/front/img/annapurnaregion-01.jpg') }}">
+                        <img class="img-fluid" src="{{ asset('assets/front/img/annapurnaregion-01.jpg') }}" alt="">
+                    </a>
+                </div>
+            </div>
+
+            <div class="experts-card bg-primary px-2 py-10 text-white">
+                <div class="grid grid-cols-3">
+                    <div class="col-span-2">
+                        <p class="mb-0">Still confused?</p>
+                        <h3 class="mb-2">Talk to our experts</h3>
+                    </div>
+                    <div>
+                        <svg class="w-20 h-20">
+                            <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#customersupport" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="experts-phone flex mb-1">
+                    <a href="tel:+977 01 4416 177" class="flex aic">
+                        <svg class="w-6 h-6 mr-1">
+                            <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#phone" />
+                        </svg>
+                        +977 01 4416 177
+                    </a>
+                </div>
+                <div class="experts-phone flex mb-1">
+                    <a href="tel:+977 9851 039 480" class="flex aic">
+                        <svg class="w-6 h-6 mr-1">
+                            <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#devicemobile" />
+                        </svg>
+                        +977 9851 039 480
+                    </a>
+                </div>
+                <div class="experts-phone flex mb-3">
+                    <a href="mailto:
+                                        info@royalhimalayanholidays.com" class="flex aic">
+                        <svg class="w-6 h-6 mr-1">
+                            <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#mail" />
+                        </svg>
+                        info@royalhimalayanholidays<wbr>.com
+                                </a>
+                </div>
+            </div>
+            <div class="mb-8 p-2 bg-light">
+                <a href="#" class="text-primary hover:text-accent mr-1">
+                    <svg class="w-6 h-6">
+                        <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#facebookmessenger" />
+                    </svg>
+                </a>
+                <a href="#" class="text-primary hover:text-accent mr-1">
+                    <svg class="w-6 h-6">
+                        <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#viber" />
+                    </svg>
+                </a>
+                <a href="#" class="text-primary hover:text-accent mr-1">
+                    <svg class="w-6 h-6">
+                        <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#whatsapp" />
+                    </svg>
+                </a>
+                <a href="#" class="text-primary hover:text-accent mr-1">
+                    <svg class="w-6 h-6">
+                        <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#skype" />
+                    </svg>
+                </a>
+                <a href="#" class="text-primary hover:text-accent mr-1">
+                    <svg class="w-6 h-6">
+                        <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#weixin" />
+                    </svg>
+                </a>
+            </div>
+
+            <div class="mb-8 bg-white p-2 lg:p-4">
+                <h2 class="mb-2 font-display text-2xl text-primary uppercase">Essential Trip Info</h2>
+                <ul class="text-sm px-2">
+                    <li class="mb-1">
+                        <a href="lifetime-deposit" target="_blank">
+                            <svg class="w-4 h-4 mr-1 text-gray">
+                                <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#arrownarrowright" />
+                            </svg>
+
+                            Lifetime Deposit </a>
+                    </li>
+                    <li class="mb-1">
+                        <a href="privacy-policy" target="_blank">
+                            <svg class="w-4 h-4 mr-1 text-gray">
+                                <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#arrownarrowright" />
+                            </svg>
+
+                            Privacy Policy </a>
+                    </li>
+                    <li class="mb-1">
+                        <a href="trek-packing-list" target="_blank">
+                            <svg class="w-4 h-4 mr-1 text-gray">
+                                <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#arrownarrowright" />
+                            </svg>
+
+                            Trek Packing List </a>
+                    </li>
+                    <li class="mb-1">
+                        <a href="responsible-tourism" target="_blank">
+                            <svg class="w-4 h-4 mr-1 text-gray">
+                                <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#arrownarrowright" />
+                            </svg>
+
+                            Responsible Tourism </a>
+                    </li>
+                    <li class="mb-1">
+                        <a href="travel-insurance" target="_blank">
+                            <svg class="w-4 h-4 mr-1 text-gray">
+                                <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#arrownarrowright" />
+                            </svg>
+
+                            Travel Insurance </a>
+                    </li>
+                    <li class="mb-1">
+                        <a href="nepal-international-flight" target="_blank">
+                            <svg class="w-4 h-4 mr-1 text-gray">
+                                <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#arrownarrowright" />
+                            </svg>
+
+                            Nepal International Flight </a>
+                    </li>
+                    <li class="mb-1">
+                        <a href="terms-and-conditions" target="_blank">
+                            <svg class="w-4 h-4 mr-1 text-gray">
+                                <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#arrownarrowright" />
+                            </svg>
+
+                            Terms &amp; Conditions </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="mb-8">
+
+                <h2 class="mb-2 font-display text-2xl text-primary uppercase">Additional Tours</h2>
+                @foreach ($similartours as $trip)
+                <a href="#" class="block mb-2">
+                    <div class="px-2 py-4 text-white"
+                        style="background: linear-gradient(rgba(0,0,0,.5), rgba(0,0,0,.5)), center / cover url('{{ asset('img/'.$trip->image) }}')">
+                        <h1 class="font-display text-xl uppercase">{{ $trip->name }}</h1>
+                        <div class="days mb-4">19 days</div>
+                        <div class="price"><span class="text-xs">from</span> <br><b>USD 2000</b></div>
+                    </div>
+                </a>
+                @endforeach
+            </div>
+
+            <div class="mb-8">
+                <img src="{{ asset('assets/front/img/tripadvisor.png') }}" alt="">
+            </div>
+
+            <div class="sticky-top sticky-price none lg:block" style="top: 5rem;">
+                @include('partials.pricecard')
+            </div>
+
+
+        </aside>
+    </div>
+
+    <!-- Similar -->
+    <div class="bg-light py-20 ">
+        <div class="container">
+            <h2 class="text-4xl lg:text-5xl font-display text-primary uppercase">Similar Tours</h2>
+            <div class="grid gap-10">
+                @foreach ($similartours as $trip)
+                @include('partials.packagebox')
+                @endforeach
+            </div>
+        </div>
+    </div> <!-- Similar -->
+
+    <!-- Trip of the month -->
+    <div class="py-10 bg-primary text-white">
+        <div class="container">
+
+            <div class="lg:flex justify-between items-center mb-4">
+                <h1 class="text-4xl lg:text-5xl font-display uppercase">Trips of the month
+                </h1>
+
+                <div class="trips-month-slider-controls">
+                    <button>
+                        <svg class="w-6 h-6 text-accent">
+                            <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#arrownarrowleft" />
+                        </svg>
+                    </button>
+                    <button>
+                        <svg class="w-6 h-6 text-accent">
+                            <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#arrownarrowright" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="trips-month-slider">
+                @foreach ($herotours as $trip)
+                <div class="relative">
+                    <div class="grid lg:grid-cols-2 gap-4">
+                        <div>
+                            <img src="{{ asset('assets/front/img/'.$trip->image) }}" alt="{{ $trip->name }}">
+                        </div>
+                        <div>
+                            <h2 class="mb-2 text-3xl font-display uppercase">
+                                {{ $trip->name }}
+                            </h2>
+                            <p>
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita
+                                assumenda repellat quisquam alias pariatur! Voluptates sint, expedita
+                                deserunt sit dolorum dolore ratione debitis harum quae odio eveniet et
+                                distinctio ex.
+                            </p>
+
+                            <div class="flex wrap mb-4">
+                                <div class="flex aic mr-2 p-2">
+                                    <svg class="w-6 h-6 mr-2">
+                                        <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#calendar"></use>
+                                    </svg>
+                                    <div>
+                                        <div class="upper bold fs-xs">Duration</div>
+                                        <span class="fs-lg bold"> 21 </span> days
+                                    </div>
+                                </div>
+                                <div class="flex aic p-2">
+                                    <svg class="w-6 h-6 mr-2">
+                                        <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#emojihappy"></use>
+                                    </svg>
+                                    <div>
+                                        <div class="upper bold fs-xs">Difficulty</div>
+                                        Easy
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="price mb-4">
+                                <div class="text-accent">
+                                    <span class="text-sm">
+                                        from
+                                    </span>
+                                    <s class="font-bold">
+                                        USD 1000
+                                    </s>
+                                </div>
+                                <div class="font-display">
+                                    <span>USD</span>
+                                    <span class="text-4xl">780</span>
+                                    <span>.00</span>
+                                </div>
+                            </div>
+
+
+                            <div>
+                                <a href="tour-details.php" class="btn btn-accent">
+                                    Explore
+                                    <svg class="w-6 h-6">
+                                        <use xlink:href="img/sprite.svg#arrownarrowright"></use>
+                                    </svg>
+                                </a>
+                                {{-- <a href="tour-details.php" class="btn btn-gray">
+                                    Book Now
+                                </a> --}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
 </section>
-<datalist id="countries">
-    <option value="Afghanistan">
-    <option value="Albania">
-    <option value="Algeria">
-    <option value="American Samoa">
-    <option value="Andorra">
-    <option value="Angola">
-    <option value="Anguilla">
-    <option value="Antarctica">
-    <option value="Antigua and Barbuda">
-    <option value="Argentina">
-    <option value="Armenia">
-    <option value="Aruba">
-    <option value="Australia">
-    <option value="Austria">
-    <option value="Azerbaijan">
-    <option value="Bahamas">
-    <option value="Bahrain">
-    <option value="Bangladesh">
-    <option value="Barbados">
-    <option value="Belarus">
-    <option value="Belgium">
-    <option value="Belize">
-    <option value="Benin">
-    <option value="Bermuda">
-    <option value="Bhutan">
-    <option value="Bolivia">
-    <option value="Bosnia and Herzegovina">
-    <option value="Botswana">
-    <option value="Bouvet Island">
-    <option value="Brazil">
-    <option value="British Indian Ocean Territory">
-    <option value="Brunei Darussalam">
-    <option value="Bulgaria">
-    <option value="Burkina Faso">
-    <option value="Burundi">
-    <option value="Cambodia">
-    <option value="Cameroon">
-    <option value="Canada">
-    <option value="Cape Verde">
-    <option value="Cayman Islands">
-    <option value="Central African Republic">
-    <option value="Chad">
-    <option value="Chile">
-    <option value="China">
-    <option value="Christmas Island">
-    <option value="Cocos (Keeling) Islands">
-    <option value="Colombia">
-    <option value="Comoros">
-    <option value="Congo">
-    <option value="Congo, The Democratic Republic of The">
-    <option value="Cook Islands">
-    <option value="Costa Rica">
-    <option value="Cote D'ivoire">
-    <option value="Croatia">
-    <option value="Cuba">
-    <option value="Cyprus">
-    <option value="Czech Republic">
-    <option value="Denmark">
-    <option value="Djibouti">
-    <option value="Dominica">
-    <option value="Dominican Republic">
-    <option value="Ecuador">
-    <option value="Egypt">
-    <option value="El Salvador">
-    <option value="Equatorial Guinea">
-    <option value="Eritrea">
-    <option value="Estonia">
-    <option value="Ethiopia">
-    <option value="Falkland Islands (Malvinas)">
-    <option value="Faroe Islands">
-    <option value="Fiji">
-    <option value="Finland">
-    <option value="France">
-    <option value="French Guiana">
-    <option value="French Polynesia">
-    <option value="French Southern Territories">
-    <option value="Gabon">
-    <option value="Gambia">
-    <option value="Georgia">
-    <option value="Germany">
-    <option value="Ghana">
-    <option value="Gibraltar">
-    <option value="Greece">
-    <option value="Greenland">
-    <option value="Grenada">
-    <option value="Guadeloupe">
-    <option value="Guam">
-    <option value="Guatemala">
-    <option value="Guinea">
-    <option value="Guinea-bissau">
-    <option value="Guyana">
-    <option value="Haiti">
-    <option value="Heard Island and Mcdonald Islands">
-    <option value="Holy See (Vatican City State)">
-    <option value="Honduras">
-    <option value="Hong Kong">
-    <option value="Hungary">
-    <option value="Iceland">
-    <option value="India">
-    <option value="Indonesia">
-    <option value="Iran, Islamic Republic of">
-    <option value="Iraq">
-    <option value="Ireland">
-    <option value="Israel">
-    <option value="Italy">
-    <option value="Jamaica">
-    <option value="Japan">
-    <option value="Jordan">
-    <option value="Kazakhstan">
-    <option value="Kenya">
-    <option value="Kiribati">
-    <option value="Korea, Democratic People's Republic of">
-    <option value="Korea, Republic of">
-    <option value="Kuwait">
-    <option value="Kyrgyzstan">
-    <option value="Lao People's Democratic Republic">
-    <option value="Latvia">
-    <option value="Lebanon">
-    <option value="Lesotho">
-    <option value="Liberia">
-    <option value="Libyan Arab Jamahiriya">
-    <option value="Liechtenstein">
-    <option value="Lithuania">
-    <option value="Luxembourg">
-    <option value="Macao">
-    <option value="Macedonia, The Former Yugoslav Republic of">
-    <option value="Madagascar">
-    <option value="Malawi">
-    <option value="Malaysia">
-    <option value="Maldives">
-    <option value="Mali">
-    <option value="Malta">
-    <option value="Marshall Islands">
-    <option value="Martinique">
-    <option value="Mauritania">
-    <option value="Mauritius">
-    <option value="Mayotte">
-    <option value="Mexico">
-    <option value="Micronesia, Federated States of">
-    <option value="Moldova, Republic of">
-    <option value="Monaco">
-    <option value="Mongolia">
-    <option value="Montserrat">
-    <option value="Morocco">
-    <option value="Mozambique">
-    <option value="Myanmar">
-    <option value="Namibia">
-    <option value="Nauru">
-    <option value="Nepal">
-    <option value="Netherlands">
-    <option value="Netherlands Antilles">
-    <option value="New Caledonia">
-    <option value="New Zealand">
-    <option value="Nicaragua">
-    <option value="Niger">
-    <option value="Nigeria">
-    <option value="Niue">
-    <option value="Norfolk Island">
-    <option value="Northern Mariana Islands">
-    <option value="Norway">
-    <option value="Oman">
-    <option value="Pakistan">
-    <option value="Palau">
-    <option value="Palestinian Territory, Occupied">
-    <option value="Panama">
-    <option value="Papua New Guinea">
-    <option value="Paraguay">
-    <option value="Peru">
-    <option value="Philippines">
-    <option value="Pitcairn">
-    <option value="Poland">
-    <option value="Portugal">
-    <option value="Puerto Rico">
-    <option value="Qatar">
-    <option value="Reunion">
-    <option value="Romania">
-    <option value="Russian Federation">
-    <option value="Rwanda">
-    <option value="Saint Helena">
-    <option value="Saint Kitts and Nevis">
-    <option value="Saint Lucia">
-    <option value="Saint Pierre and Miquelon">
-    <option value="Saint Vincent and The Grenadines">
-    <option value="Samoa">
-    <option value="San Marino">
-    <option value="Sao Tome and Principe">
-    <option value="Saudi Arabia">
-    <option value="Senegal">
-    <option value="Serbia and Montenegro">
-    <option value="Seychelles">
-    <option value="Sierra Leone">
-    <option value="Singapore">
-    <option value="Slovakia">
-    <option value="Slovenia">
-    <option value="Solomon Islands">
-    <option value="Somalia">
-    <option value="South Africa">
-    <option value="South Georgia and The South Sandwich Islands">
-    <option value="Spain">
-    <option value="Sri Lanka">
-    <option value="Sudan">
-    <option value="Suriname">
-    <option value="Svalbard and Jan Mayen">
-    <option value="Swaziland">
-    <option value="Sweden">
-    <option value="Switzerland">
-    <option value="Syrian Arab Republic">
-    <option value="Taiwan, Province of China">
-    <option value="Tajikistan">
-    <option value="Tanzania, United Republic of">
-    <option value="Thailand">
-    <option value="Timor-leste">
-    <option value="Togo">
-    <option value="Tokelau">
-    <option value="Tonga">
-    <option value="Trinidad and Tobago">
-    <option value="Tunisia">
-    <option value="Turkey">
-    <option value="Turkmenistan">
-    <option value="Turks and Caicos Islands">
-    <option value="Tuvalu">
-    <option value="Uganda">
-    <option value="Ukraine">
-    <option value="United Arab Emirates">
-    <option value="United Kingdom">
-    <option value="United States">
-    <option value="United States Minor Outlying Islands">
-    <option value="Uruguay">
-    <option value="Uzbekistan">
-    <option value="Vanuatu">
-    <option value="Venezuela">
-    <option value="Viet Nam">
-    <option value="Virgin Islands, British">
-    <option value="Virgin Islands, U.S">
-    <option value="Wallis and Futuna">
-    <option value="Western Sahara">
-    <option value="Yemen">
-    <option value="Zambia">
-    <option value="Zimbabwe">
-</datalist>
+<a href="#" class="btn btn-accent lg:none w-full fixed" style="bottom:0;border-radius:0">Book Now</a>
 @endsection
 @push('scripts')
-<script src="{{ asset('assets/front/js/tour-details.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tiny-slider@2.9.3/dist/tiny-slider.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/wheelzoom@4.0.1/wheelzoom.min.js"></script>
 <script>
     jQuery.noConflict(true);
@@ -1094,18 +963,6 @@ window.onload = function() {
     toastr.danger(session_error_message);
   }
 
-  // Hero Slider
-//   $(".tour-details-hero .owl-carousel").owlCarousel({
-//     items: 1,
-//     dots: false,
-//     // autoplay: true,
-//     // autoplayTimeout: 8000,
-//     loop: true,
-//     animateOut: 'fadeOut'
-//   });
-
-  // $("#review-modal").modal('show');
-
   //Display user image upon select
   const showImage = (src, target) => {
     var fr = new FileReader();
@@ -1120,27 +977,12 @@ window.onload = function() {
   }
   const src = document.getElementById("photo-input");
   const target = document.getElementById("write-review-photo");
-//   showImage(src, target);
-
-  //Control ratings
-//   const stars = document.querySelectorAll('.select-ratings i')
-//   const ratingsInput = document.querySelector('#ratings-input')
-//   stars.forEach((star, index) => {
-//     star.addEventListener('click', () => {
-//       ratingsInput.value = index + 1
-//       console.log(ratingsInput.value)
-//       stars.forEach((star, indexx) => {
-//         star.classList.remove('active')
-//         if (indexx <= index) star.classList.add('active')
-//       })
-//     })
-//   })
 }
 </script>
 <script type="text/javascript">
 $(function() {
     function expandAll() {
-        alert('h');
+        // alert('h');
     }
     $('#map-modal').on('show.bs.modal', function (e) {
       setTimeout(function() {
@@ -1149,34 +991,62 @@ $(function() {
         wheelzoom($('.map-image-modal'));
       }, 500);
     });
-    // $(".similar-trip-rating").rating();
-    // $("#review-rating").rating();
+
+    const heroSlider = tns({
+        container: '.hero-slider',
+        nav: false,
+        controlsContainer: '.hero-slider-controls > div',
+        autoplay: true,
+        autoplayButtonOutput: false
+    })
+
+    const monthSlider = tns({
+        container: '.trips-month-slider',
+        nav: false,
+        controlsContainer: '.trips-month-slider-controls',
+        autoplay: true,
+        autoplayButtonOutput: false
+    })
+
+    window.addEventListener('DOMContentLoaded', () => {
+
+        const headerScrollObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) {
+                    header.classList.add('none')
+                    header.classList.remove('flex')
+                } else {
+                    header.classList.remove('none')
+                    header.classList.add('flex')
+                }
+            })
+        })
+        headerScrollObserver.observe(document.querySelector('#tourDetailsBarIO'))
+
+        const tdb = document.querySelector('.tdb')
+        const sections = document.querySelectorAll('.tds')
+        const sectionScrollObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                const link = tdb.querySelector(`[href="#${entry.target.id}"]`)
+                if (entry.isIntersecting) {
+                    console.log(observer.rootMargin);
+                    link.classList.add('bg-accent')
+                } else {
+                    link.classList.remove('bg-accent')
+                }
+            })
+        }, {
+            rootMargin: "-19% 0px -80% 0px"
+        })
+        sections.forEach(section => {
+            sectionScrollObserver.observe(section)
+        })
+
+    })
 });
 </script>
 <script>
     $(function() {
-        // var validator = $("#review-form").validate({
-        //     ignore: "",
-        //     rules: {
-        //         'name': 'required',
-        //         'country': 'required',
-        //         'title': 'required',
-        //         'review': 'required',
-        //     },
-        //     submitHandler: function(form, event) {
-        //         event.preventDefault();
-        //         if (grecaptcha.getResponse(1)) {
-        //             var btn = $(form).find('button[type=submit]').attr('disabled', true).html('Submitting...');
-        //             setTimeout(() => {
-        //                 form.submit();
-        //             }, 500);
-        //         }else{
-        //             grecaptcha.reset(review_captcha);
-        //             grecaptcha.execute(review_captcha);
-        //         }
-        //     },
-        // });
-
         var enquiry_validator = $("#enquiry-form").validate({
             ignore: "",
             rules: {
@@ -1219,3 +1089,5 @@ $(function() {
     };
 </script>
 @endpush
+
+
