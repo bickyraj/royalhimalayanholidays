@@ -1,16 +1,15 @@
-<div class="team-member border-light p-2  mb-2">
-    <div class="grid lg:grid-cols-3 xl:grid-cols-4 gap-2 xl:gap-3">
-        <div class="lg:col-span-1">
-            <img class="img-fluid" src="{{ $item->imageUrl }}" alt="">
+<div class="p-2">
+    <div class="md:flex items-start">
+        <div class="mb-4 md:mr-4 flex-shrink-0">
+            <img src="{{ $item->imageUrl }}" width="160" class="alt="">
         </div>
-        <div class="lg:col-2 xl:col-3">
-            <h3 class="fs-lg text-primary">{{ $item->name }}</h3>
-
-            <p class="title">{{ $item->position }}</p>
-            <div class="lim" style="margin-bottom: 22px;">
+        <div>
+            <h2 class="mb-1 font-display text-2xl text-primary">{{ $item->name }}</h2>
+            <div class="mb-2 text-gray">{{ $item->position }}</div>
+            <p class="mb-4">
                 {!! truncate(strip_tags($item->description)) !!}
-            </div>
-            <a href="{{ route('front.teams.show', ['slug' => $item->slug]) }}" class="btn btn-theme btn-sm">Read more</a>
+            </p>
+            <a href="{{ route('front.teams.show', ['slug' => $item->slug]) }}" class="btn btn-sm btn-primary">Read more</a>
         </div>
     </div>
 </div>
