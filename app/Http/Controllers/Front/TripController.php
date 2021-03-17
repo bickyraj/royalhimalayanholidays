@@ -35,9 +35,10 @@ class TripController extends Controller
 			}
         ])->first();
 
+        $block_2_trips = \App\Trip::where('block_2', 1)->latest()->get();
 		$why_choose_us = \App\WhyChoose::select('id', 'title')->latest()->get();
 		$blogs = \App\Blog::select('id', 'name', 'slug')->latest()->limit(5)->get();
-		return view('front.trips.show', compact('trip', 'blogs', 'why_choose_us'));
+		return view('front.trips.show', compact('trip', 'blogs', 'why_choose_us', 'block_2_trips'));
 	}
 
 	public function booking($slug)

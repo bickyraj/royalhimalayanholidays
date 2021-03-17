@@ -1,14 +1,15 @@
 @if ($essential_trip_informations)
-<div class="mb-3 essential-info">
-    <h3>Essential Trip Information</h3>
-    <ul class="essential-links">
+<div class="mb-8 bg-white p-2 lg:p-4">
+    <h2 class="mb-2 font-display text-2xl text-primary uppercase">Essential Trip Info</h2>
+    <ul class="text-sm px-2">
         @foreach ($essential_trip_informations as $trip_info)
-        <li>
+        <li class="mb-1">
             <a href="{!! ($trip_info->link)?$trip_info->link:'javascript:;' !!}" target="_blank">
-            <svg class="icon mr-1">
-                <use xlink:href="{{ asset('assets/front/img/sprite.svg#arrownarrowright') }}" /></svg>
-
-            {{ $trip_info->name }} </a>
+                <svg class="w-4 h-4 mr-1 text-gray">
+                    <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#arrownarrowright" />
+                </svg>
+                {{ $trip_info->name }}
+            </a>
         </li>
         @endforeach
     </ul>

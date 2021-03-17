@@ -1,4 +1,4 @@
-<div class="tour grid md:grid-cols-2 lg:grid-cols-3">
+<div class="tour grid md:grid-cols-2 lg:grid-cols-3" style="{{ $main_style??'' }}">
     <div class="top">
         <img src="{{ $tour->imageUrl }}" alt="<?= $tour->name; ?>">
         <div class="stars absolute flex items-center mr-4 text-accent">
