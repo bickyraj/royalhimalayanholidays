@@ -5,7 +5,7 @@
     <img src="{{ asset('assets/front/img/hero.jpg') }}" alt="">
     <div class="overlay absolute">
         <div class="container ">
-            <h1>Gallery</h1>
+            <h1 class="font-display upper">Gallery</h1>
             <div class="breadcrumb-wrapper">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb fs-sm wrap">
@@ -17,20 +17,29 @@
         </div>
 </section>
 
-<section class="py-5">
+<section class="py-10">
     <div class="container">
-        <div class="grid lg:grid-cols-3 gap-2 xl:gap-3">
-            <?php foreach ($trips as $trip) : ?>
-                <div class="album relative">
-                    <a href="{{ $trip->galleryLink }}" class="block">
-                        <img src="{{ $trip->mediumImageUrl }}" alt="">
-                        <div class="overlay absolute">
-                            <h2 class="fs-lg"><span>{{ $trip->name }}</span></h2>
-                            <a href="{{ $trip->galleryLink }}" class="stretched-link"></a>
+        <div class="grid lg:grid-cols-3 xl:grid-cols-4 gap-10">
+            <div class="lg:col-span-2 xl:col-span-3">
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <?php foreach ($trips as $trip) : ?>
+                    <a href="{{ $trip->galleryLink }}">
+                        <div class="relative mb-2">
+                            <img class="block" src="{{ $trip->mediumImageUrl }}" alt="">
+                            <div class="flex absolute" style="left:0.5rem;bottom:-0.5rem;right:0.5rem">
+                                <div class="bg-primary shadow-md px-2 py-1 font-display text-lg text-white uppercase">
+                                    {{ $trip->name }}
+                                </div>
+                            </div>
                         </div>
                     </a>
+                    <?php endforeach; ?>
                 </div>
-            <?php endforeach; ?>
+            </div>
+            <aside>
+                @include('front.elements.enquiry')
+            </aside>
         </div>
+    </div>
 </section>
 @endsection
