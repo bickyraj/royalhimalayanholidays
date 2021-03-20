@@ -23,12 +23,15 @@
                     </svg>
                 </button>
                 <form id="search-form" action="{{ route('front.trips.search') }}" method="GET" x-show="searchboxOpen" class="flex absolute" style="top:100%;right:0" @click.away="searchboxOpen=false">
-                    <input id="header-search" style="z-index: 9999;" name="keyword" value="{{ request()->get('keyword') }}" placeholder="Search keywords" class="text-lg p-2 bg-gray">
-                    <button type="submit" class="btn-accent p-2">
-                        <svg class="w-6 h-6">
-                            <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#arrownarrowright" />
-                        </svg>
-                    </button>
+                    <div style="position: relative; display:flex;">
+                        <input id="header-search" style="z-index: 9999;" name="keyword" value="{{ request()->get('keyword') }}" placeholder="Search keywords" class="text-lg p-2 bg-gray">
+                        <button type="submit" class="btn-accent p-2">
+                            <svg class="w-6 h-6">
+                                <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#arrownarrowright" />
+                            </svg>
+                        </button>
+                        <div id="autocomplete-suggestion-box" style="position: absolute; width: 100%; display: flex; right: 0px;"></div>
+                    </div>
                 </form>
             </div><!-- Search button -->
 

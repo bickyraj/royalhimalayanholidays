@@ -9,7 +9,7 @@
     session()->forget('error_message');
   }
 ?>
-@extends('layouts.front_inner')
+@extends('layouts.front')
 @section('content')
 <!-- Hero -->
 <section class="hero hero-alt relative">

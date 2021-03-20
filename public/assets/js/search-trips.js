@@ -14,6 +14,7 @@ $("#header-search" ).autocomplete({
       }
     });
   },
+  appendTo: "#autocomplete-suggestion-box",
   minLength: 1,
   classes: {
     "ui-autocomplete": "autocomlete-highlight"
