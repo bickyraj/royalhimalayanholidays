@@ -43,30 +43,12 @@
                         </div>
                         <div class="form-group">
                             <label for="">Middle name</label>
-                            <input type="text" class="form-control" name="middle_name" placeholder="Middle name" required>
+                            <input type="text" class="form-control" name="middle_name" placeholder="Middle name">
                         </div>
                         <div class="form-group">
                             <label for="">Last name *</label>
                             <input type="text" class="form-control" name="last_name" placeholder="Last name" required>
                         </div>
-                        <div class="form-group">
-                            <label for="">Country *</label>
-                            @include('front.elements.country')
-                        </div>
-                        <div class="form-group lg:col-2">
-                            <label for="">Mailing address *</label>
-                            <input type="text" name="mailing_address" class="form-control" placeholder="Mailing Address" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="">Email *</label>
-                            <input type="email" name="email" class="form-control" placeholder="Email" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="">Contact no. *</label>
-                            <input type="tel" name="contact_no" class="form-control" placeholder="Contact no." required>
-                        </div>
-                    </div>
-                    <div class="grid lg:grid-cols-3 gap-4 mb-2">
                         <div class="form-group">
                             <label for="">Gender *</label>
                             <select name="gender" id="" class="form-control" required>
@@ -76,15 +58,36 @@
                             </select>
                         </div>
                         <div class="form-group">
+                            <label for="">Country *</label>
+                            @include('front.elements.country')
+                        </div>
+                       
+                        <div class="form-group">
+                            <label for="">Email *</label>
+                            <input type="email" name="email" class="form-control" placeholder="Email" required>
+                        </div>
+                        <div class="form-group col-md-4">
+                              <label for="inputState">Country Code *</label>
+                              @include('front.elements.country-code')
+                            </div>
+   
+                        <div class="form-group">
+                            <label for="">Contact no. *</label>
+                            <input type="tel" name="contact_no" class="form-control" placeholder="Contact no." required>
+                        </div>
+                    </div>
+                    <div class="grid lg:grid-cols-3 gap-4 mb-2">
+                        
+                        <?php /* ?><div class="form-group">
                             <label for="">Date of birth *</label>
                             <input type="date" name="dob" id="" class="form-control" max="<?php echo date('Y-m-d'); ?>">
-                        </div>
+                        </div><?php */ ?>
                     </div>
                     <br>
                     <hr class="mb-2">
 
                     <h2 class="fs-lg bold text-primary mb-2">Trip details</h3>
-                        <div class="grid lg:grid-cols-3 gap-4 mb-2">
+                      <?php /* ?>  <div class="grid lg:grid-cols-3 gap-4 mb-2">
                             <div class="form-group">
                                 <label for="">Passport no. *</label>
                                 <input type="number" name="passport_no" class="form-control" placeholder="Passport No." required>
@@ -103,12 +106,17 @@
                                 <label for="">Expiry date *</label>
                                 <input type="date" name="expiry_date" class="form-control" min="<?php echo date('Y-m-d');?>" placeholder="Expiry date" required>
                             </div>
-                        </div>
+                        </div><?php */ ?>
                         <div class="grid lg:grid-cols-3 gap-4 mb-2">
                             <div class="form-group">
-                                <label for="">No. of travellers *</label>
+                                <label for="">No. of Adults *</label>
                                 <input type="number" name="no_of_travellers" class="form-control" min="<?php echo date('Y-m-d');?>"
-                                placeholder="No. of travellers" required>
+                                placeholder="No. of Adults" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="">No. of Children</label>
+                                <input type="number" name="no_of_travellers" class="form-control" min="<?php echo date('Y-m-d');?>"
+                                placeholder="No. of Children">
                             </div>
                             <div class="form-group">
                                 <label for="">Preferred departure date*</label>
@@ -117,9 +125,9 @@
                         </div>
                         <div class="grid lg:grid-cols-3 gap-4 mb-2">
                             <div class="form-group">
-                                <label for="">Emergency Contact *</label>
+                                <label for="">Remarks *</label>
                                 <textarea name="emergency_contact" id="" cols="30" rows="3" class="form-control"
-                                placeholder="Emergency Contact"></textarea>
+                                placeholder="Remarks"></textarea>
                             </div>
                         </div>
                         @include('front.elements.recaptcha')

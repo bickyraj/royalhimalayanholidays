@@ -23,7 +23,7 @@
             <div class="lg:col-span-2 xl:col-span-3">
                 <button :class="{'btn':true,'btn-accent':active==='administration','btn-primary':active!=='administration'}" @click="active='administration'">Administration</button>
                 <button :class="{'btn':true,'btn-accent':active==='representatives','btn-primary':active!=='representatives'}" @click="active='representatives'">Representatives</button>
-                <button :class="{'btn':true,'btn-accent':active==='tourguides','btn-primary':active!=='tourguides'}" @click="active='tourguides'">Tour Guides</button>
+                <button :class="{'btn':true,'btn-accent':active==='tourguides','btn-primary':active!=='tourguides'}" @click="active='tourguides'">Trek / Tour Guides</button>
 
                 <div x-show="active==='administration'">
                     <div class="grid gap-2 lg:gap-3 pt-8">

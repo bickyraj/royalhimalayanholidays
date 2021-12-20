@@ -78,7 +78,7 @@
     </div>
     <div class="bg-light">
         <div class="container py-4">
-            <div id="tirps-block" class="grid md:grid-cols-2 lg:grid-cols-3 gap-2 xl:gap-3">
+            <div id="tirps-block" class="grid gap-10">
             </div>
         </div>
     </div>

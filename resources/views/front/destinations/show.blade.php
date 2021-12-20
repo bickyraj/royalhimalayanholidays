@@ -11,7 +11,7 @@
     <img src="{{ $destination->imageUrl }}" alt="">
     <div class="overlay absolute">
         <div class="container ">
-            <h1 class="font-display upper">Tour Listing</h1>
+            <h1 class="font-display upper">{{ $destination->name }}</h1>
             <div class="breadcrumb-wrapper">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb fs-sm wrap">

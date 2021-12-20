@@ -4,12 +4,35 @@
 @include('front.elements.banner')
 <!-- Slider -->
 
-<!-- Destinations -->
+<!-- Popular right now -->
+<div class="featured py-10 bg-light">
+    <div class="container">
+
+        <div class="lg:flex justify-between items-center mb-4">
+            <h1 class="text-4xl lg:text-5xl font-display text-primary uppercase">Luxury Packages</h1>
+            <a href="https://www.royalhimalayanholidays.com/trips" class="btn btn-accent shadow-md">
+                View all
+                <svg class="w-4 h-4">
+                    <use xlink:href="{{ asset('assets/front/img/sprite.svg#chevronright') }}" />
+                </svg>
+            </a>
+        </div>
+
+        <div class="grid gap-2 md:gap-4">
+            @forelse ($block_1_trips as $block_1_tour)
+                @include('front.elements.tour-card', ['tour' => $block_1_tour])
+            @empty
+            @endforelse
+        </div>
+    </div>
+</div> <!-- Popular right now -->
+
+<!-- Regions -->
 <div class="destinations py-10">
     <div class="container">
         <div class="lg:flex justify-between items-center mb-4">
-            <h1 class="text-4xl lg:text-5xl font-display text-primary uppercase">Destinations</h1>
-            <a href="#" class="text-accent">
+            <h1 class="text-4xl lg:text-5xl font-display text-primary uppercase">Regions</h1>
+            <a href="https://www.royalhimalayanholidays.com/trips" class="btn btn-accent shadow-md">
                 View all
                 <svg class="w-4 h-4">
                     <use xlink:href="{{ asset('assets/front/img/sprite.svg#chevronright') }}" />
@@ -17,13 +40,13 @@
             </a>
         </div>
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-2">
-            @forelse ($destinations as $destination)
+            @forelse ($regions as $region)
                 <div class="destination relative">
-                    <a href="{{ route('front.destinations.show', $destination->slug) }}">
-                        <img src="{{ $destination->imageUrl }}" alt="">
+                    <a href="{{ route('front.destinations.show', $region->slug) }}">
+                        <img src="{{ $region->imageUrl }}" alt="">
                         <div class="absolute text bg-white p-4">
-                            <h2 class="font-bold">{{ $destination->name }}</h2>
-                            <div class="text-gray text-sm">{{ $destination->trips->count() }} tours</div>
+                            <h2 class="font-bold">{{ $region->name }}</h2>
+                            <div class="text-gray text-sm">{{ $region->trips->count() }} tours</div>
                         </div>
                     </a>
                 </div>
@@ -38,10 +61,9 @@
     <div class="container">
         <div class="grid lg:grid-cols-2 gap-10">
             <div>
-                <h1 class="mb-4 text-4xl lg:text-5xl text-primary font-display uppercase">Best way to explore the world
+                <h1 class="mb-4 text-4xl lg:text-5xl text-primary font-display uppercase">Why Choose Royal Himalayan Holidays
                 </h1>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis, itaque! Commodi animi pariatur saepe
-                    porro ea facilis sequi tempora quo.</p>
+
 
                     <div class="flex">
                         <svg class="mr-4 w-10 h-10 text-primary flex-shrink-0" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
@@ -50,9 +72,9 @@
                         </svg>
 
                     <div>
-                        <h2 class="font-bold">Local expert guides</h2>
-                        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Magnam nesciunt vero adipisci,
-                            aperiam tenetur nam!</p>
+                        <h2 class="font-bold">Local professional guides</h2>
+                        <p></p>
+
                     </div>
                 </div>
                 <div class="flex">
@@ -64,9 +86,9 @@
                     </svg>
 
                     <div>
-                        <h2 class="font-bold">Customized Tours</h2>
-                        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Magnam nesciunt vero adipisci,
-                            aperiam tenetur nam!</p>
+                        <h2 class="font-bold">Luxury Holidays</h2>
+                        <p></p>
+
                     </div>
                 </div>
                 <div class="flex">
@@ -83,9 +105,9 @@
                     </svg>
 
                     <div>
-                        <h2 class="font-bold">Safety ensured</h2>
-                        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Magnam nesciunt vero adipisci,
-                            aperiam tenetur nam!</p>
+                        <h2 class="font-bold">Experts in Himalayan trails</h2>
+                        <p></p>
+
                     </div>
                 </div>
             </div>
@@ -100,8 +122,8 @@
 <div class="activities py-10">
     <div class="container">
         <div class="lg:flex justify-between items-center mb-4">
-            <h1 class="text-4xl lg:text-5xl font-display text-primary uppercase">Tour activities</h1>
-            <a href="#" class="text-accent">
+            <h1 class="text-4xl lg:text-5xl font-display text-primary uppercase">Nepal</h1>
+            <a href="https://www.royalhimalayanholidays.com/trips" class="btn btn-accent shadow-md">
                 View all
                 <svg class="w-4 h-4">
                     <use xlink:href="{{ asset('assets/front/img/sprite.svg#chevronright') }}" />
@@ -119,28 +141,7 @@
     </div>
 </div>
 
-<!-- Popular right now -->
-<div class="featured py-10 bg-light">
-    <div class="container">
 
-        <div class="lg:flex justify-between items-center mb-4">
-            <h1 class="text-4xl lg:text-5xl font-display text-primary uppercase">Luxury Tours</h1>
-            <a href="#" class="text-accent">
-                View all
-                <svg class="w-4 h-4">
-                    <use xlink:href="{{ asset('assets/front/img/sprite.svg#chevronright') }}" />
-                </svg>
-            </a>
-        </div>
-
-        <div class="grid gap-2 md:gap-4">
-            @forelse ($block_1_trips as $block_1_tour)
-                @include('front.elements.tour-card', ['tour' => $block_1_tour])
-            @empty
-            @endforelse
-        </div>
-    </div>
-</div> <!-- Popular right now -->
 
 <!-- Reviews -->
 <div class="reviews py-10">
@@ -149,7 +150,7 @@
         <div class="lg:flex justify-between items-center mb-4">
             <h1 class="text-4xl lg:text-5xl font-display text-primary uppercase">Reviews from our
                 customers</h1>
-            <a href="#" class="text-accent">
+            <a href="https://www.royalhimalayanholidays.com/reviews" class="btn btn-accent shadow-md">
                 View all
                 <svg class="w-4 h-4">
                     <use xlink:href="{{ asset('assets/front/img/sprite.svg#chevronright') }}" />
@@ -184,7 +185,7 @@
 <div class="py-10 bg-primary text-white">
     <div class="container">
         <div class="lg:flex justify-between items-center mb-4">
-            <h1 class="text-4xl lg:text-5xl font-display uppercase">Holidays of the month
+            <h1 class="text-4xl lg:text-5xl font-display uppercase">Best Available treks
             </h1>
 
             <div class="trips-month-slider-controls">
@@ -202,8 +203,8 @@
         </div>
 
         <div class="trips-month-slider">
-            @forelse ($block_2_trips as $block2tour)
-                @include('front.elements.tour_card_slider', ['tour' => $block2tour])
+            @forelse ($block_3_trips as $block3tour)
+                @include('front.elements.tour_card_slider', ['tour' => $block3tour])
             @empty
             @endforelse
         </div>
@@ -224,13 +225,15 @@
 <!-- Blog -->
 <div class="blog py-10">
     <div class="container">
+        <h1 class="mb-4 text-4xl lg:text-5xl text-primary font-display uppercase">Blog
+                </h1>
         <div class="grid md:grid-cols-3 gap-2 lg:gap-3">
             @forelse ($blogs as $blog)
                 @include('front.elements.blog_card', $blog)
             @empty
             @endforelse
         </div>
-        <a href="" class="theme">Go to blog
+        <a href="{{ ('/blogs') }}" class="theme">Go to blog
             <svg>
                 <use xlink:href="{{ asset('assets/front/img/sprite.svg#arrownarrowright') }}" />
             </svg>

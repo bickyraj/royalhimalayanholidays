@@ -6,6 +6,7 @@
     </div>
 
     <div class="p-4 text-white">
+        @if($trip->cost)
         <div class="">
             <span class="text-sm mb-2 mr-2">Price starting from</span>
             <s class="font-bold text-xl">${{ number_format($trip->cost) }}</s>
@@ -15,6 +16,7 @@
             <span class="font-bold text-5xl text-accent">{{ number_format($trip->offer_price) }}</span>
             <span class="text-xl">per person</span>
         </div>
+        @endif
         <div class="mb-2 text-center">
             <a href="{{ route('front.trips.booking', $trip->slug) }}" class="mb-2 btn btn-accent w-full">Book Now</a>
             <a href="{{ route('front.trips.customize', $trip->slug) }}" class="btn btn-accent">
@@ -26,19 +28,19 @@
             </a>
         </div>
         <div class="actions p-1">
-            <a href="" class="flex items-center p-1 text-accent" title="Print tour details">
+            <a href="{{ route('front.trips.print', ['slug' => $trip->slug]) }}" class="flex items-center p-1 text-white" title="Print tour details">
                 <svg class="w-4 h-4 flex-shrink-0 mr-2">
                     <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#printer" />
                 </svg>
                 <span class="text-sm">Print Tour Details</span>
             </a>
-            <a href="#" class="flex items-center p-1 text-accent" title="">
+            <a href="{{ $trip->pdfLink }}" class="flex items-center p-1 text-white" title="">
                 <svg class="w-4 h-4 flex-shrink-0 mr-2">
                     <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#download" />
                 </svg>
                 <span class="text-sm">Download Tour Brochure</span>
             </a>
-            <a href="#" class="flex items-center p-1 text-accent" title="Share tour">
+            <a href="#" class="flex items-center p-1 text-white" title="Share tour">
                 <svg class="w-4 h-4 flex-shrink-0 mr-2">
                     <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#share" />
                 </svg>
@@ -46,6 +48,7 @@
             </a>
         </div>
     </div>
+    {{--
     <div class="bg-light p-2">
         <div class="mb-2 font-bold">Get group discounts</div>
         <table>
@@ -77,4 +80,5 @@
             </tbody>
         </table>
     </div>
+    --}}
 </div>

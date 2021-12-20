@@ -95,18 +95,7 @@ $mapImageUrl = $trip->mapImageUrl;
                 </div>
             </div>
 
-            <div class="ratings-wrapper none lg:block">
-                <div class="ratings d-flex align-items-center bg-primary text-white px-6 py-4 text-secondary">
-                    <div>
-                        @for ($i = 0; $i < 5; $i++)
-                            <svg class="w-4 h-4 text-accent">
-                                <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#star" />
-                            </svg>
-                        @endfor
-                    </div>
-                    <div class="text-xs">from 25 reviews</div>
-                </div>
-            </div>
+         
         </div>
     </div>
 
@@ -115,25 +104,26 @@ $mapImageUrl = $trip->mapImageUrl;
 <section class="bg-gray">
     <!-- Sticky Nav -->
     <div id="tourDetailsBarIO"></div>
-    <div class="tdb bg-primary text-white sticky-top" style="z-index:99">
+    <div class="tdb bg-primary text-white sticky-top" style="top:6rem;z-index:1">
         <div class="container flex justify-center items-center">
             <nav class="tour-details-tabs flex justify-center items-center" id="secondnav">
                 <ul class="nav flex flex-wrap py-1">
                     <li class="mr-2">
-                        <a href="#overview" class="flex items-center p-2 hover:bg-white hover:text-primary">
+                         <a href="#itinerary" class="flex items-center p-2 hover:bg-white hover:text-primary">
+                            <svg class="w-6 h-6 md:mr-2">
+                                <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#clock" />
+                            </svg>
+                            <span class="none md:block">Itinerary</span></a>
+                        
+                    </li>
+                    @if (!$trip->trip_itineraries->isEmpty())
+                    <li class="mr-2">
+                        <a href="#overview-text" class="flex items-center p-2 hover:bg-white hover:text-primary">
                             <svg class="w-6 h-6 md:mr-2">
                                 <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#viewgrid" />
                             </svg>
                             <span class="none md:block">Overview</span>
                         </a>
-                    </li>
-                    @if (!$trip->trip_itineraries->isEmpty())
-                    <li class="mr-2">
-                        <a href="#itinerary" class="flex items-center p-2 hover:bg-white hover:text-primary">
-                            <svg class="w-6 h-6 md:mr-2">
-                                <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#clock" />
-                            </svg>
-                            <span class="none md:block">Itinerary</span></a>
                     </li>
                     @endif
                     @if ($trip->trip_include_exclude)
@@ -171,6 +161,14 @@ $mapImageUrl = $trip->mapImageUrl;
                             <span class="none md:block">FAQs</span></a>
                     </li>
                     @endif
+                    <li class="mr-2">
+                         <a href="{{ route('front.trips.booking', $trip->slug) }}" class="flex items-center p-2 hover:bg-white hover:text-primary">
+                            <svg class="w-6 h-6 md:mr-2">
+                                <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#clock" />
+                            </svg>
+                            <span class="none md:block">Book Now</span></a>
+                        
+                    </li>
                 </ul>
             </nav>
         </div>
@@ -180,7 +178,7 @@ $mapImageUrl = $trip->mapImageUrl;
 
         <div class="grid lg:grid-cols-3 xl:grid-cols-4 gap-2 lg:gap-10">
 
-            <div class="lg:col-span-2 xl:col-span-3 relative">
+            <div class="tour-details lg:col-span-2 xl:col-span-3 relative">
 
                 <div class="lg:none">
                     @include('front.elements.price_card')
@@ -254,37 +252,7 @@ $mapImageUrl = $trip->mapImageUrl;
                                 </div>
                             </div>
 
-                            <div class="flex aic">
-                                <div class="mr-4">
-                                    <svg class="w-10 h-10 text-primary">
-                                        <use xlink:href="{{asset('assets/front/img/sprite.svg')}}#transportation" />
-                                    </svg>
-                                </div>
-                                <div>
-                                    <div class="text-sm font-bold text-gray">
-                                        Transportation
-                                    </div>
-                                    <div>
-                                        {{ $trip->trip_info->transportation??'' }}
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="flex aic">
-                                <div class="mr-4">
-                                    <svg class="w-10 h-10 text-primary">
-                                        <use xlink:href="{{asset('assets/front/img/sprite.svg')}}#bestseason" />
-                                    </svg>
-                                </div>
-                                <div>
-                                    <div class="text-sm font-bold text-gray">
-                                        Best Season
-                                    </div>
-                                    <div>
-                                        {{ $trip->trip_info->best_season??'' }}
-                                    </div>
-                                </div>
-                            </div>
+                      
 
                             <div class="flex aic">
                                 <div class="mr-4">
@@ -318,37 +286,7 @@ $mapImageUrl = $trip->mapImageUrl;
                                 </div>
                             </div>
 
-                            <div class="flex aic">
-                                <div class="mr-4">
-                                    <svg class="w-10 h-10 text-primary">
-                                        <use xlink:href="{{asset('assets/front/img/sprite.svg')}}#startsat" />
-                                    </svg>
-                                </div>
-                                <div>
-                                    <div class="text-sm font-bold text-gray">
-                                        Starts at
-                                    </div>
-                                    <div>
-                                        {{ $trip->starting_point }}
-                                    </div>
-                                </div>
-                            </div>
 
-                            <div class="table-item flex aic">
-                                <div class="mr-4">
-                                    <svg class="w-10 h-10 text-primary">
-                                        <use xlink:href="{{asset('assets/front/img/sprite.svg')}}#endsat" />
-                                    </svg>
-                                </div>
-                                <div>
-                                    <div class="text-sm font-bold text-gray">
-                                        Ends at
-                                    </div>
-                                    <div>
-                                        {{ $trip->ending_point }}
-                                    </div>
-                                </div>
-                            </div>
 
                             <div class="flex aic lg:col-span-2">
                                 <div class="mr-4">
@@ -376,27 +314,16 @@ $mapImageUrl = $trip->mapImageUrl;
                                 {!! ($trip->trip_info)?$trip->trip_info->highlights:'' !!}
                             </ul>
 
-                            <div id="overview-text" class="lim collapse">
-                                {!! $trip->trip_info->overview??'' !!}
-                            </div>
-                            {{-- <p class="text-center">
-                                <button id="toggle-overview" class="btn btn-gray" data-bs-toggle="collapse" data-bs-target="#overview-text">Show
-                                    More</button>
-                            </p> --}}
+                        
 
-                            <div class="bg-light mb-3 p-4">
-                                <h3 class="mb-2 font-display text-xl text-primary"> Important Note</h3>
-                                <p class="mb-0 text-sm">
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem sequi vero quasi, error impedit ratione maxime eaque perspiciatis reprehenderit tempore delectus quibusdam ipsam, ipsa pariatur dolore ea veniam temporibus illo eum deleniti quas, a vitae. Dolorum explicabo, ex ullam obcaecati blanditiis tenetur dicta similique. Voluptatum qui molestias consequuntur minus praesentium!
-                                </p>
-                            </div>
+                            
                         </div>
                     </div>
 
 
                 </div>
 
-               <div class='mb-4 embed-container'><iframe src='https://www.youtube.com/embed//dFLxa0VwY-E' frameborder='0' allowfullscreen></iframe></div>
+              
 
                 <div id="itinerary" class="tds pt-10 bg-white px-4 lg:px-10 pb-4 mb-4" x-data="{
                     day1Open:true,
@@ -441,8 +368,8 @@ $mapImageUrl = $trip->mapImageUrl;
                                     </button>
                                     <div id="day{{ $i+1 }}" class="border-top-light p-4" x-cloak x-show.transition="day{{ $i+1 }}Open">
                                         <div class="grid xl:grid-cols-3 gap-4">
-                                            <img src="{{ asset('assets/front/img/hero.jpg') }}" alt="">
-                                            <div class="xl:col-span-2">
+                                            <!--<img src="{{ asset('assets/front/img/hero.jpg') }}" alt="">-->
+                                            <div class="xl:col-span-3">
                                                 {!! $itinerary->description !!}
                                             </div>
                                         </div>
@@ -457,6 +384,41 @@ $mapImageUrl = $trip->mapImageUrl;
                             <a href="{{ route('front.trips.customize', $trip->slug) }}" class="btn btn-sm btn-primary">Customize</a>
                         </div>
                 </div>
+                
+                <div id="overview" class="tds bg-white px-4 lg:px-10 pb-4 mb-4">
+                    <div>
+
+                        <div class="mb-6 grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                           
+
+
+
+                        </div>
+
+                        <div class="px-3">
+
+
+                            <div id="overview-text" class="lim" style="text-align: justify;">
+                                {!! $trip->trip_info->overview??'' !!}
+                            </div>
+                            {{-- <p class="text-center">
+                                <button id="toggle-overview" class="btn btn-gray" data-bs-toggle="collapse" data-bs-target="#overview-text">Show
+                                    More</button>
+                            </p> --}}
+{{--
+                            <div class="bg-light mb-3 p-4">
+                                <h3 class="mb-2 font-display text-xl text-primary"> Important Note</h3>
+                                <p class="mb-0 text-sm">
+                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem sequi vero quasi, error impedit ratione maxime eaque perspiciatis reprehenderit tempore delectus quibusdam ipsam, ipsa pariatur dolore ea veniam temporibus illo eum deleniti quas, a vitae. Dolorum explicabo, ex ullam obcaecati blanditiis tenetur dicta similique. Voluptatum qui molestias consequuntur minus praesentium!
+                                </p>
+                            </div>--}}
+                        </div>
+                    </div>
+
+
+                </div>
+{{--
+               <div class='mb-4 embed-container'><iframe src='https://www.youtube.com/embed//dFLxa0VwY-E' frameborder='0' allowfullscreen></iframe></div> --}}
                 @if ($trip->trip_include_exclude)
                 <div id="inclusions" class="tds pt-10 bg-white px-4 lg:px-10 pb-4 mb-4">
                     <div class="bg-white p-3">
@@ -468,21 +430,24 @@ $mapImageUrl = $trip->mapImageUrl;
                                   <?= $trip->trip_include_exclude->include; ?>
                                 </ul>
                             </div>
+                             <?php /* ?>
                             <div>
                                 <h2 class="text-3xl lg:text-4xl font-display text-primary uppercase">Doesn't Include</h2>
                                 <ul class="excludes">
                                     <?= $trip->trip_include_exclude->exclude; ?>
                                 </ul>
-                            </div>
+                            </div> 
+                             <?php */ ?>
                             @endif
 
                         </div>
+                       <?php /* ?>
                         <div class="complimentary p-2">
                             <h2 class="text-3xl lg:text-4xl font-display text-primary uppercase">Complimentary</h2>
                             <ul>
                               <?= $trip->trip_include_exclude->complimentary ??''; ?>
                             </ul>
-                        </div>
+                        </div>  <?php */ ?>
                     </div>
                 </div>
                 @endif
@@ -581,9 +546,7 @@ $mapImageUrl = $trip->mapImageUrl;
                     </a>
                 </div>
 
-                <div class="mb-4">
-                    <iframe src="https://www.google.com/maps/d/embed?mid=1o2LaX1o68hVBiycWHWDrK_F18H1epiGB" width="100%" height="480" class="border-none"></iframe>
-                </div>
+                
 
                 <div id="faqs" class="tds pt-10 bg-white px-4 lg:px-10 pb-4 mb-4">
                     <h2 class="mb-4 text-4xl lg:text-5xl font-display text-primary uppercase">Frequently Asked Questions</h2>
@@ -629,13 +592,13 @@ $mapImageUrl = $trip->mapImageUrl;
                         </a>
                     </div>
                     <div class="flex">
-                        <a href="#" class="flex items-center mr-2 p-1 text-accent" title="Print tour details">
+                        <a href="{{ route('front.trips.print', ['slug' => $trip->slug]) }}" class="flex items-center mr-2 p-1 text-accent" title="Print tour details">
                             <svg class="w-6 h-6 flex-shrink-0 mr-2">
                                 <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#printer" />
                             </svg>
                             <span class="font-display uppercase">Print Tour Details</span>
                         </a>
-                        <a href="#" class="flex items-center p-1 text-accent" title="">
+                        <a href="{{ $trip->pdfLink }}" class="flex items-center p-1 text-accent" title="">
                             <svg class="w-6 h-6 flex-shrink-0 mr-2">
                                 <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#download" />
                             </svg>
@@ -703,10 +666,23 @@ $mapImageUrl = $trip->mapImageUrl;
                     </a>
                 </div> --}}
 
-                <a href="booking-form.php" class="mb-8 btn btn-accent w-full">Ask for agency price</a>
+                <a href="{{ route('front.trips.agency', $trip->slug) }}" class="mb-8 btn btn-accent w-full">Ask for agency price</a>
 
                 @include('front.elements.enquiry')
-
+                
+                @if($trip->map_file_name)
+                <div class="mb-8">
+                    <div class="card-header">
+                        <h2 class="mb-2">Map & Route</h2>
+                    </div>
+                    <div class="card-body p-0">
+                        <a data-fancybox data-caption="Route Map" href="{{ $trip->mapImageUrl }}">
+                            <img class="img-fluid" src="{{ $trip->mapImageUrl }}" alt="">
+                        </a>
+                    </div>
+                </div>
+                 @endif 
+                {{--
                 <div class="mb-8">
                     <div class="card-header">
                         <h2 class="mb-2 font-display text-2xl text-primary uppercase">Route Map</h2>
@@ -717,6 +693,7 @@ $mapImageUrl = $trip->mapImageUrl;
                         </a>
                     </div>
                 </div>
+                --}}
 
                 <div class="experts-card bg-primary px-2 py-10 text-white">
                     <div class="grid grid-cols-3">
@@ -746,7 +723,7 @@ $mapImageUrl = $trip->mapImageUrl;
                             {{ Setting::get('mobile2') }}
                         </a>
                     </div>
-                    <div class="experts-phone flex mb-3">
+                    <div class="experts-phone flex mb-3" style="font-size: 14px;">
                         <a href="mailto:{{ Setting::get('email') }}" class="flex aic">
                             <svg class="w-6 h-6 mr-1">
                                 <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#mail" />
@@ -822,7 +799,7 @@ $mapImageUrl = $trip->mapImageUrl;
             </aside>
         </div>
     </div>
-
+{{--
     <!-- Similar -->
     @if (!$trip->similar_trips->isEmpty())
     <div class="bg-light py-20 ">
@@ -870,7 +847,7 @@ $mapImageUrl = $trip->mapImageUrl;
 
 
 <a href="#" class="btn btn-accent lg:none w-full fixed" style="bottom:0;border-radius:0">Book Now</a>
-
+--}}
 @endsection
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>

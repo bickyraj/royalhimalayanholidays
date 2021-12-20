@@ -1,6 +1,7 @@
 <div class="tour grid md:grid-cols-2 lg:grid-cols-3" style="{{ $main_style??'' }}">
     <div class="top">
         <img src="{{ $tour->imageUrl }}" alt="<?= $tour->name; ?>">
+        {{--
         <div class="stars absolute flex items-center mr-4 text-accent">
             <svg class="w-4 h-4">
                 <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#star" /></svg>
@@ -12,14 +13,14 @@
                 <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#star" /></svg>
             <svg class="w-4 h-4">
                 <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#star" /></svg>
-            </div>
+            </div>--}}
         </div>
     <div class="offer">Best Seller</div>
     <div class="lg:col-span-2">
         <div class="px-4">
             <div class="py-4">
                 {{-- Top --}}
-                <div class="lg:flex mb-8">
+                <div class="lg:flex">
                     <div class="flex-grow-1">
                         <a href="{{ route('front.trips.show', $tour->slug) }}"><h2 class="mb-1 font-display text-2xl text-primary uppercase">{{ $tour->name }}</h2></a>
                         <div class="flex text-sm">
@@ -30,6 +31,7 @@
                         </div>
                     </div>
                     <div class="flex-shrink-0 mb-4 flex items-baseline price">
+                        @if($tour->cost)
                         <div class="mr-2 text-gray">
                             <span class="text-sm">
                                 from
@@ -50,25 +52,21 @@
                             </span>
                             <span class="">
                                 .{{ $price_arr[1] }}
-                            </span>
+                            </span></br><span>Group Size: <?= $tour->group_size; ?></span>
                         </div>
+                        @endif
                     </div>
                 </div>
                 {{-- Highlights --}}
                 <div class="article text-sm">
-                    <ul>
-                        <li>Enjoy breathtaking views of surrounding mountains.</li>
-                        <li>Travel comfortably by helicopter wherever you go.</li>
-                        <li>Stay at 5-star hotels in the city and luxury lodges elsewhere.</li>
-                        <li>Experience up-close encounters with indigeneous culture and wildlife.</li>
-                        <li>Go on a hiking trails in Sagarmatha National Park.</li>
-                    </ul>
+                    <!--{{ $tour->trip_info['highlights'] }}-->
+                    <?php echo($tour->trip_info['highlights']) ?>                
                 </div>
             </div>
             {{-- Bottom --}}
             <div class="bottom flex gap-4 flex-wrap py-4">
                 <div class="flex-grow-1 mb-2 lg:mb-0">
-                    <div class="mb-1 font-display text-gray text-sm uppercase">When to go</div>
+                    <div class="mb-1 font-display text-gray text-sm uppercase">Best time to go</div>
                     <div class="flex text-xs gap-1">
                         <div class="flex justify-center items-center w-5 h-5 bg-gray" style="border-radius: 50%">J</div>
                         <div class="flex justify-center items-center w-5 h-5 bg-gray" style="border-radius: 50%">F</div>

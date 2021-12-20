@@ -36,7 +36,7 @@
             @empty
             @endforelse
         </div>
-        <a href="#" class="theme">Go to blog
+        <a href="{{ ('blogs') }}" class="theme">Go to blog
             <svg><use xlink:href="{{ asset('assets/front/img/sprite.svg#arrownarrowright') }}" /></svg>
         </a>
     </div>

@@ -29,7 +29,7 @@
                     </div>
                 </div>
             </div>
-
+        @if($tour->cost)
             <div class="price mb-4">
                 <div class="text-accent">
                     <span class="text-sm">
@@ -54,10 +54,11 @@
                     </span>
                 </div>
             </div>
+            @endif
 
 
             <div>
-                <a href="tour-details.php" class="btn btn-accent">
+                <a href="{{ route('front.trips.show', $tour->slug) }}" class="btn btn-accent">
                     Explore
                     <svg class="w-6 h-6">
                         <use xlink:href="{{ asset('assets/front/img/sprite.svg#arrownarrowright') }}"></use>

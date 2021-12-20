@@ -31,7 +31,7 @@
     <div class="container">
         <div class="grid lg:grid-cols-3 xl:grid-cols-4 gap-10">
             <div class="lg:col-span-2 xl:col-span-3">
-                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nemo culpa necessitatibus commodi nisi ipsa quia velit, fuga rem accusantium odio quo et sit maxime magnam repellendus, eligendi laudantium dolore non?</p>
+                <p></p>
                 <div class="mb-8">
                     <form id="captcha-form" action="{{ route('front.contact.store') }}" method="POST">
                         @csrf
@@ -107,7 +107,7 @@
                             <svg class="w-6 h-6 mr-2">
                                 <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#phone" />
                             </svg>
-                            {{ Setting::get('mobile1') ?? '' }}
+                            {{ Setting::get('telephone') ?? '' }}
                         </a>
                     </div>
                     <div class="experts-phone flex mb-2">
@@ -115,12 +115,11 @@
                             <svg class="w-6 h-6 mr-2">
                                 <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#devicemobile" />
                             </svg>
-                            {{ Setting::get('mobile2') ?? '' }}
+                            {{ Setting::get('mobile1') ?? '' }}
                         </a>
                     </div>
                     <div class="experts-phone flex mb-3">
-                        <a href="mailto:
-                                info@royalhimalayanholidays.com" class="flex aic">
+                        <a href="mailto:info@royalhimalayanholidays.com" class="flex aic" style="font-size: 14px;">
                             <svg class="w-6 h-6 mr-2">
                                 <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#mail" />
                             </svg>
