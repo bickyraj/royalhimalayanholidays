@@ -17,7 +17,7 @@ class HomeController extends Controller
 	{
 		$data['banners'] = \App\Banner::all();
 		$data['destinations'] = \App\Destination::orderBy('name')->select('id', 'name', 'slug', 'image_name')->get();
-		$data['regions'] = \App\Region::orderBy('name')->select('id', 'name', 'slug', 'image_name')->latest(4)->get();
+		$data['regions'] = \App\Region::orderBy('name')->select('id', 'name', 'slug', 'image_name')->limit(4)->latest()->get();
 		$data['activities'] = \App\Activity::orderBy('name')->select('id', 'name', 'slug', 'image_name')->get();
 		$data['block_1_trips'] = \App\Trip::where('block_1', 1)->latest()->get();
 		$data['block_2_trips'] = \App\Trip::where('block_2', 1)->latest()->get();
