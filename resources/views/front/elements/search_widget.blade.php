@@ -21,7 +21,7 @@
             </h2>
             <div class="flex items-center flex-wrap mb-4">
                 @foreach($destinations as $destination)
-                    <input type="checkbox" id="dest-{{ $destination->id }}" name="destination_id" value="{{ $destination->id }}" hidden>
+                    <input type="checkbox" id="dest-{{ $destination->id }}" name="dest[]" value="{{ $destination->id }}" hidden>
                     <label for="dest-{{ $destination->id }}" class="label-button flex items-center p-2">
                         <svg class="w-6 h-6 mr-2">
                             <use xlink:href="{{ asset('assets/front/img/sprite.svg#check') }}" />
@@ -35,7 +35,7 @@
             </h2>
             <div class="mb-4">
                 @foreach($activities as $activity)
-                    <input type="checkbox" name="activity_id" id="act-{{ $activity->id }}" value="{{ $activity->id }}" hidden>
+                    <input type="checkbox" name="act[]" id="act-{{ $activity->id }}" value="{{ $activity->id }}" hidden>
                     <label class="custom-check flex p-1" for="act-{{ $activity->id }}">
                         <svg class="mr-2 w-4 h-4">
                             <use xlink:href="{{ asset('assets/front/img/sprite.svg#check') }}" />

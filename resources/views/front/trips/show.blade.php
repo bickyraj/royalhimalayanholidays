@@ -95,7 +95,7 @@ $mapImageUrl = $trip->mapImageUrl;
                 </div>
             </div>
 
-         
+
         </div>
     </div>
 
@@ -114,7 +114,7 @@ $mapImageUrl = $trip->mapImageUrl;
                                 <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#clock" />
                             </svg>
                             <span class="none md:block">Itinerary</span></a>
-                        
+
                     </li>
                     @if (!$trip->trip_itineraries->isEmpty())
                     <li class="mr-2">
@@ -167,7 +167,7 @@ $mapImageUrl = $trip->mapImageUrl;
                                 <use xlink:href="{{ asset('assets/front/img/sprite.svg') }}#clock" />
                             </svg>
                             <span class="none md:block">Book Now</span></a>
-                        
+
                     </li>
                 </ul>
             </nav>
@@ -215,7 +215,7 @@ $mapImageUrl = $trip->mapImageUrl;
                                         Max. Elevation
                                     </div>
                                     <div>
-                                        {{ $trip->max_altitude }}m
+                                        {{ $trip->max_altitude }}
                                     </div>
                                 </div>
                             </div>
@@ -252,7 +252,7 @@ $mapImageUrl = $trip->mapImageUrl;
                                 </div>
                             </div>
 
-                      
+
 
                             <div class="flex aic">
                                 <div class="mr-4">
@@ -285,6 +285,22 @@ $mapImageUrl = $trip->mapImageUrl;
                                     </div>
                                 </div>
                             </div>
+                             <div class="flex aic">
+                                <div class="mr-4">
+                                    <svg class="w-10 h-10 text-primary">
+                                        <use xlink:href="{{asset('assets/front/img/sprite.svg')}}#bestseason" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <div class="text-sm font-bold text-gray">
+                                        Best Season
+                                    </div>
+                                    <div>
+                                         {{ $trip->trip_info->best_season??'' }}
+                                    </div>
+                                </div>
+                            </div>
+
 
 
 
@@ -314,16 +330,16 @@ $mapImageUrl = $trip->mapImageUrl;
                                 {!! ($trip->trip_info)?$trip->trip_info->highlights:'' !!}
                             </ul>
 
-                        
 
-                            
+
+
                         </div>
                     </div>
 
 
                 </div>
 
-              
+
 
                 <div id="itinerary" class="tds pt-10 bg-white px-4 lg:px-10 pb-4 mb-4" x-data="{
                     day1Open:true,
@@ -384,12 +400,12 @@ $mapImageUrl = $trip->mapImageUrl;
                             <a href="{{ route('front.trips.customize', $trip->slug) }}" class="btn btn-sm btn-primary">Customize</a>
                         </div>
                 </div>
-                
+
                 <div id="overview" class="tds bg-white px-4 lg:px-10 pb-4 mb-4">
                     <div>
 
                         <div class="mb-6 grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                           
+
 
 
 
@@ -436,7 +452,7 @@ $mapImageUrl = $trip->mapImageUrl;
                                 <ul class="excludes">
                                     <?= $trip->trip_include_exclude->exclude; ?>
                                 </ul>
-                            </div> 
+                            </div>
                              <?php */ ?>
                             @endif
 
@@ -546,7 +562,7 @@ $mapImageUrl = $trip->mapImageUrl;
                     </a>
                 </div>
 
-                
+
 
                 <div id="faqs" class="tds pt-10 bg-white px-4 lg:px-10 pb-4 mb-4">
                     <h2 class="mb-4 text-4xl lg:text-5xl font-display text-primary uppercase">Frequently Asked Questions</h2>
@@ -669,7 +685,7 @@ $mapImageUrl = $trip->mapImageUrl;
                 <a href="{{ route('front.trips.agency', $trip->slug) }}" class="mb-8 btn btn-accent w-full">Ask for agency price</a>
 
                 @include('front.elements.enquiry')
-                
+
                 @if($trip->map_file_name)
                 <div class="mb-8">
                     <div class="card-header">
@@ -681,7 +697,7 @@ $mapImageUrl = $trip->mapImageUrl;
                         </a>
                     </div>
                 </div>
-                 @endif 
+                 @endif
                 {{--
                 <div class="mb-8">
                     <div class="card-header">

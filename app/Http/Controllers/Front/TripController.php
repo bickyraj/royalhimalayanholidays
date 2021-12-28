@@ -58,48 +58,63 @@ class TripController extends Controller
 
 	public function search(Request $request)
 	{
-		$keyword = $request->keyword;
-		$destination_ids = $request->dest;
-		$activity_ids = $request->act;
-		$sortBy = $request->price;
+        try {
+            $keyword = $request->keyword;
+            $destination_ids = $request->dest;
+            if (is_array($request->dest)) {
+                $destination_ids = implode(',', $request->dest);
+            }
+            $activity_ids = $request->act;
+            if (is_array($request->act)) {
+                $activity_ids = implode(',', $request->act);
+            }
+            $sortBy = $request->price;
+            $duration = $request->duration;
+            $query = Trip::query();
 
-		$query = Trip::query();
+            if (isset($keyword) && !empty($keyword)) {
+                $query->where([
+                    ['name', 'LIKE', "%" . $keyword . "%"]
+                ]);
+            } else {
 
-		if (isset($keyword) && !empty($keyword)) {
-			$query->where([
-				['name', 'LIKE', "%" . $keyword . "%"]
-			]);
-		} else {
+                if ($destination_ids) {
+                    $destination_ids = explode(',', $destination_ids);
+                    $query->whereHas('destination', function($q) use ($destination_ids) {
+                        $q->whereIn('destinations.id', $destination_ids);
+                    });
+                }
 
-			if ($destination_ids) {
-				$destination_ids = explode(',', $request->dest);
-				$query->whereHas('destination', function($q) use ($destination_ids) {
-					$q->whereIn('destinations.id', $destination_ids);
-				});
-			}
+                if ($activity_ids) {
+                    $activity_ids = explode(',', $activity_ids);
+                    $query->whereHas('activities', function($q) use ($activity_ids) {
+                        $q->whereIn('activities.id', $activity_ids);
+                    });
+                }
 
-			if ($activity_ids) {
-				$activity_ids = explode(',', $request->act);
-				$query->whereHas('activities', function($q) use ($activity_ids) {
-					$q->whereIn('activities.id', $activity_ids);
-				});
-			}
+                if ($sortBy) {
+                    if ($sortBy == "price_l_h") {
+                        $query->orderBy('offer_price', 'ASC');
+                    } else {
+                        $query->orderBy('offer_price', 'DESC');
+                    }
+                }
 
-			if ($sortBy) {
-				if ($sortBy == "price_l_h") {
-					$query->orderBy('offer_price', 'ASC');
-				} else {
-					$query->orderBy('offer_price', 'DESC');
-				}
-			}
-		}
+                if (!empty($duration)) {
+                    $durationArr = explode('-', $duration);
+                    $query->whereRaw(('cast(duration as UNSIGNED) BETWEEN ' . $durationArr[0] . ' AND ' . $durationArr[1]));
+                }
+            }
 
-		$trips = $query->latest()->get();
+            $trips = $query->latest()->get();
 
-		$destinations = \App\Destination::where('status', '=', 1)->get();
-		$activities = \App\Activity::where('status', '=', 1)->get();
+            $destinations = \App\Destination::where('status', '=', 1)->get();
+            $activities = \App\Activity::where('status', '=', 1)->get();
 
-		return view('front.trips.search', compact('destinations', 'activities', 'trips'));
+            return view('front.trips.search', compact('destinations', 'activities', 'trips'));
+        } catch (\Throwable $th) {
+            throw $th;
+        }
 	}
 
 	public function searchAjax(Request $request)
@@ -189,29 +204,28 @@ class TripController extends Controller
 
 	public function bookingStore(Request $request)
 	{
-		$request->validate([
-			'id' => 'required'
-		]);
+        try {
+            $request->validate([
+                'id' => 'required'
+            ]);
 
-		$trip = Trip::find($request->id);
+            $trip = Trip::find($request->id);
 
-		$request->merge([
-			'trip_name' => $trip->name,
-			'ip_address' => $request->ip()
-		]);
-
-		try {
-			Mail::send('emails.common', ['body' => $request], function ($message) use ($request) {
-			    $message->to(Setting::get('email'));
-			    $message->from($request->email);
-			    $message->subject('Trip Booking');
-			});
-			session()->flash('success_message', "Thank you for your Booking. We'll contact you very soon.");
-			return redirect()->back();
-		} catch (\Exception $e) {
-			Log::info($e->getMessage());
-			return redirect()->back();
-		}
+            $request->merge([
+                'trip_name' => $trip->name,
+                'ip_address' => $request->ip()
+            ]);
+            Mail::send('emails.common', ['body' => $request], function ($message) use ($request) {
+                $message->to(Setting::get('email'));
+                $message->from($request->email);
+                $message->subject('Trip Booking');
+            });
+            session()->flash('success_message', "Thank you for your Booking. We'll contact you very soon.");
+            return redirect()->back();
+        } catch (\Throwable $e) {
+            Log::info($e->getMessage());
+            return redirect()->back();
+        }
 	}
 
 	public function departureBookingStore(Request $request)
@@ -284,6 +298,13 @@ class TripController extends Controller
 
 		return view('front.trips.customize-trip', compact('trip'));
 	}
+	public function agency($slug)
+	{
+		$trip = Trip::where('slug', '=', $slug)->first();
+
+		return view('front.trips.agency-price', compact('trip'));
+	}
+
 
 	public function allTripGallery()
 	{

@@ -35,6 +35,7 @@
             <div class="lg:col-span-2 xl:col-span-3">
                 <form id="captcha-form" action="{{ route('front.trips.booking.store') }}" method="POST">
                     @csrf
+                    <input type="hidden" name="id" value="{{ $trip->id }}">
                     <h2 class="fs-lg bold text-primary mb-2">Personal details</h2>
                     <div class="grid lg:grid-cols-3 gap-4 mb-2">
                         <div class="form-group">
@@ -61,7 +62,7 @@
                             <label for="">Country *</label>
                             @include('front.elements.country')
                         </div>
-                       
+
                         <div class="form-group">
                             <label for="">Email *</label>
                             <input type="email" name="email" class="form-control" placeholder="Email" required>
@@ -70,14 +71,14 @@
                               <label for="inputState">Country Code *</label>
                               @include('front.elements.country-code')
                             </div>
-   
+
                         <div class="form-group">
                             <label for="">Contact no. *</label>
                             <input type="tel" name="contact_no" class="form-control" placeholder="Contact no." required>
                         </div>
                     </div>
                     <div class="grid lg:grid-cols-3 gap-4 mb-2">
-                        
+
                         <?php /* ?><div class="form-group">
                             <label for="">Date of birth *</label>
                             <input type="date" name="dob" id="" class="form-control" max="<?php echo date('Y-m-d'); ?>">
